@@ -2,17 +2,17 @@
 # Script file to compare the averaging scale of the MM estimator
 # against the model MMZ used to model the Epps effect.
 
-using JLD; using LaTeXStrings; using Plots; using Statistics; using Distributions
+using JLD, LaTeXStrings, Plots, Statistics, Distributions
 
 #---------------------------------------------------------------------------
 
-cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
+cd("/Users/patrickchang1/PCEPTG-MSC")
 
 include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
 
 include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG")
 
-include("../../Functions/Monte Carlo Simulation Algorithms/GBM")
+include("../../Functions/SDEs/GBM")
 
 #---------------------------------------------------------------------------
 
@@ -93,17 +93,14 @@ erD = q .* std(lam1h5[1], dims = 1)
 erF = q .* std(lam1h5[2], dims = 1)
 
 p1 = plot(dt, mean(lam1h5[1], dims = 1)', ribbon=erD', fillalpha=.1, label = L"\textrm{MM Dirichlet}", legend = :bottomright, legendtitle="Method",
-    color = :blue, dpi = 300, ylims = (-0.1, 0.7))
-plot!(p1, dt, mean(lam1h5[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red)
-plot!(p1, dt, lam1h5[3], label = L"\textrm{MMZ}", line = (2, :dash))
-title!(p1, L"\textrm{\sffamily (a) Correlation and sampling interval (} \lambda=1/5\textrm{\sffamily , T = 3600)}")
-ylabel!(p1, L"\textrm{Correlation } \bar{\rho}")
-xlabel!(p1, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
+    color = :blue, dpi = 300, ylims = (-0.1, 0.7), marker=([:x :d],3,1,stroke(2,:blue)))
+plot!(p1, dt, mean(lam1h5[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red, marker=([:+ :d],3,1,stroke(2,:red)))
+plot!(p1, dt, lam1h5[3], label = L"\textrm{Theoretical}", line = (2, :solid), color = :black)
+ylabel!(p1, L"\rho(\Delta t)")
+xlabel!(p1, L"\Delta t \textrm{ [sec]}")
 
+savefig(p1, "Plots/MM-NUFFT/AveScaleLam5_1h.svg")
 
-savefig(p1, "Plots/100DPI/AveScaleLam5_1h.png")
-savefig(p1, "Plots/300DPI/AveScaleLam5_1h.png")
-savefig(p1, "Plots/AveScaleLam5_1h.pdf")
 
 # lam = 20
 lam1h20 = MMZmodel(T1h, dt, 20, reps)
@@ -116,17 +113,15 @@ lam1h20 = lam1h20["lam1h20"]
 q = quantile.(TDist(reps-1), [0.84])
 erD = q .* std(lam1h20[1], dims = 1)
 erF = q .* std(lam1h20[2], dims = 1)
-p1 = plot(dt, mean(lam1h20[1], dims = 1)', ribbon=erD', fillalpha=.1, label = L"\textrm{MM Dirichlet}", legend = :bottomright, legendtitle="Method",
-    color = :blue, dpi = 300, ylims = (-0.1, 0.7))
-plot!(p1, dt, mean(lam1h20[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red)
-plot!(p1, dt, lam1h20[3], label = L"\textrm{MMZ}", line = (2, :dash))
-title!(p1, L"\textrm{\sffamily (b) Correlation and sampling interval (} \lambda=1/20 \textrm{\sffamily , T = 3600)}")
-ylabel!(p1, L"\textrm{Correlation } \bar{\rho}")
-xlabel!(p1, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
 
-savefig(p1, "Plots/100DPI/AveScaleLam20_1h.png")
-savefig(p1, "Plots/300DPI/AveScaleLam20_1h.png")
-savefig(p1, "Plots/AveScaleLam20_1h.pdf")
+p1 = plot(dt, mean(lam1h20[1], dims = 1)', ribbon=erD', fillalpha=.1, label = L"\textrm{MM Dirichlet}", legend = :bottomright, legendtitle="Method",
+    color = :blue, dpi = 300, ylims = (-0.1, 0.7), marker=([:x :d],3,1,stroke(2,:blue)))
+plot!(p1, dt, mean(lam1h20[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red, marker=([:+ :d],3,1,stroke(2,:red)))
+plot!(p1, dt, lam1h20[3], label = L"\textrm{Theoretical}", line = (2, :solid), color = :black)
+ylabel!(p1, L"\rho(\Delta t)")
+xlabel!(p1, L"\Delta t \textrm{ [sec]}")
+
+savefig(p1, "Plots/MM-NUFFT/AveScaleLam20_1h.svg")
 
 
 #---------------------------------------------------------------------------
@@ -145,17 +140,14 @@ erD = q .* std(lam1d5[1], dims = 1)
 erF = q .* std(lam1d5[2], dims = 1)
 
 p1 = plot(dt, mean(lam1d5[1], dims = 1)', ribbon=erD', fillalpha=.1, label = L"\textrm{MM Dirichlet}", legend = :bottomright, legendtitle="Method",
-    color = :blue, dpi = 300, ylims = (-0.1, 0.7))
-plot!(p1, dt, mean(lam1d5[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red)
-plot!(p1, dt, lam1d5[3], label = L"\textrm{MMZ}", line = (2, :dash))
-title!(p1, L"\textrm{\sffamily (c) Correlation and sampling interval (} \lambda=1/5\textrm{\sffamily , T = 28800)}")
-ylabel!(p1, L"\textrm{Correlation } \bar{\rho}")
-xlabel!(p1, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
+    color = :blue, dpi = 300, ylims = (-0.1, 0.7), marker=([:x :d],3,1,stroke(2,:blue)))
+plot!(p1, dt, mean(lam1d5[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red, marker=([:+ :d],3,1,stroke(2,:red)))
+plot!(p1, dt, lam1d5[3], label = L"\textrm{Theoretical}", line = (2, :solid), color = :black)
+ylabel!(p1, L"\rho(\Delta t)")
+xlabel!(p1, L"\Delta t \textrm{ [sec]}")
 
+savefig(p1, "Plots/MM-NUFFT/AveScaleLam5_1d.svg")
 
-savefig(p1, "Plots/100DPI/AveScaleLam5_1d.png")
-savefig(p1, "Plots/300DPI/AveScaleLam5_1d.png")
-savefig(p1, "Plots/AveScaleLam5_1d.pdf")
 
 # lam = 20
 lam1d20 = MMZmodel(T1d, dt, 20, reps)
@@ -168,17 +160,15 @@ lam1d20 = lam1d20["lam1d20"]
 q = quantile.(TDist(reps-1), [0.84])
 erD = q .* std(lam1d20[1], dims = 1)
 erF = q .* std(lam1d20[2], dims = 1)
-p1 = plot(dt, mean(lam1d20[1], dims = 1)', ribbon=erD', fillalpha=.1, label = L"\textrm{MM Dirichlet}", legend = :bottomright, legendtitle="Method",
-    color = :blue, dpi = 300, ylims = (-0.1, 0.7))
-plot!(p1, dt, mean(lam1d20[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red)
-plot!(p1, dt, lam1d20[3], label = L"\textrm{MMZ}", line = (2, :dash))
-title!(p1, L"\textrm{\sffamily (d) Correlation and sampling interval (} \lambda=1/20 \textrm{\sffamily , T = 28800)}")
-ylabel!(p1, L"\textrm{Correlation } \bar{\rho}")
-xlabel!(p1, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
 
-savefig(p1, "Plots/100DPI/AveScaleLam20_1d.png")
-savefig(p1, "Plots/300DPI/AveScaleLam20_1d.png")
-savefig(p1, "Plots/AveScaleLam20_1d.pdf")
+p1 = plot(dt, mean(lam1d20[1], dims = 1)', ribbon=erD', fillalpha=.1, label = L"\textrm{MM Dirichlet}", legend = :bottomright, legendtitle="Method",
+    color = :blue, dpi = 300, ylims = (-0.1, 0.7), marker=([:x :d],3,1,stroke(2,:blue)))
+plot!(p1, dt, mean(lam1d20[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red, marker=([:+ :d],3,1,stroke(2,:red)))
+plot!(p1, dt, lam1d20[3], label = L"\textrm{Theoretical}", line = (2, :solid), color = :black)
+ylabel!(p1, L"\rho(\Delta t)")
+xlabel!(p1, L"\Delta t \textrm{ [sec]}")
+
+savefig(p1, "Plots/MM-NUFFT/AveScaleLam20_1d.svg")
 
 
 #---------------------------------------------------------------------------
@@ -197,17 +187,13 @@ erD = q .* std(lam1w5[1], dims = 1)
 erF = q .* std(lam1w5[2], dims = 1)
 
 p1 = plot(dt, mean(lam1w5[1], dims = 1)', ribbon=erD', fillalpha=.1, label = L"\textrm{MM Dirichlet}", legend = :bottomright, legendtitle="Method",
-    color = :blue, dpi = 300, ylims = (-0.1, 0.7))
-plot!(p1, dt, mean(lam1w5[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red)
-plot!(p1, dt, lam1w5[3], label = L"\textrm{MMZ}", line = (2, :dash))
-title!(p1, L"\textrm{\sffamily (e) Correlation and sampling interval (} \lambda=1/5\textrm{\sffamily , T = 144000)}")
-ylabel!(p1, L"\textrm{Correlation } \bar{\rho}")
-xlabel!(p1, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
+    color = :blue, dpi = 300, ylims = (-0.1, 0.7), marker=([:x :d],3,1,stroke(2,:blue)))
+plot!(p1, dt, mean(lam1w5[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red, marker=([:+ :d],3,1,stroke(2,:red)))
+plot!(p1, dt, lam1w5[3], label = L"\textrm{Theoretical}", line = (2, :solid), color = :black)
+ylabel!(p1, L"\rho(\Delta t)")
+xlabel!(p1, L"\Delta t \textrm{ [sec]}")
 
-
-savefig(p1, "Plots/100DPI/AveScaleLam5_1w.png")
-savefig(p1, "Plots/300DPI/AveScaleLam5_1w.png")
-savefig(p1, "Plots/AveScaleLam5_1w.pdf")
+savefig(p1, "Plots/MM-NUFFT/AveScaleLam5_1w.svg")
 
 # lam = 20
 lam1w20 = MMZmodel(T1w, dt, 20, reps)
@@ -220,17 +206,16 @@ lam1w20 = lam1w20["lam1w20"]
 q = quantile.(TDist(reps-1), [0.84])
 erD = q .* std(lam1w20[1], dims = 1)
 erF = q .* std(lam1w20[2], dims = 1)
-p1 = plot(dt, mean(lam1w20[1], dims = 1)', ribbon=erD', fillalpha=.1, label = L"\textrm{MM Dirichlet}", legend = :bottomright, legendtitle="Method",
-    color = :blue, dpi = 300, ylims = (-0.1, 0.7))
-plot!(p1, dt, mean(lam1w20[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red)
-plot!(p1, dt, lam1w20[3], label = L"\textrm{MMZ}", line = (2, :dash))
-title!(p1, L"\textrm{\sffamily (f) Correlation and sampling interval (} \lambda=1/20 \textrm{\sffamily , T = 144000)}")
-ylabel!(p1, L"\textrm{Correlation } \bar{\rho}")
-xlabel!(p1, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
 
-savefig(p1, "Plots/100DPI/AveScaleLam20_1w.png")
-savefig(p1, "Plots/300DPI/AveScaleLam20_1w.png")
-savefig(p1, "Plots/AveScaleLam20_1w.pdf")
+p1 = plot(dt, mean(lam1w20[1], dims = 1)', ribbon=erD', fillalpha=.1, label = L"\textrm{MM Dirichlet}", legend = :bottomright, legendtitle="Method",
+    color = :blue, dpi = 300, ylims = (-0.1, 0.7), marker=([:x :d],3,1,stroke(2,:blue)))
+plot!(p1, dt, mean(lam1w20[2], dims = 1)', ribbon=erF', fillalpha=.1, label = L"\textrm{MM Fej\'{e}r}", color = :red, marker=([:+ :d],3,1,stroke(2,:red)))
+plot!(p1, dt, lam1w20[3], label = L"\textrm{Theoretical}", line = (2, :solid), color = :black)
+ylabel!(p1, L"\rho(\Delta t)")
+xlabel!(p1, L"\Delta t \textrm{ [sec]}")
+
+savefig(p1, "Plots/MM-NUFFT/AveScaleLam20_1w.svg")
+
 
 #---------------------------------------------------------------------------
 # test plot of all paths

@@ -2,11 +2,11 @@
 # Script file to compare the averaging scale of the MM estimator
 # using pathological correlation choices.
 
-using JLD; using LaTeXStrings; using Plots; using Statistics; using Distributions
+using JLD, LaTeXStrings, Plots, Statistics, Distributions
 
 #---------------------------------------------------------------------------
 
-cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
+cd("/Users/patrickchang1/PCEPTG-MSC")
 
 include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
 
@@ -110,33 +110,16 @@ res = res["res"]
 
 p1 = plot(dt, mean(res[1], dims = 1)', ribbon = std(res[1], dims = 1)' * quantile.(TDist(reps-1), [0.84]),
         fillalpha=.1, label = L"\rho = -0.5", legend = :bottomright, legendtitle="Induced",
-        dpi = 300, ylims = (-0.7, 0.8))
+        dpi = 300, ylims = (-0.7, 0.8), marker=([:x :d],3,1,stroke(2,:blue)), color = :blue)
 plot!(p1, dt, mean(res[3], dims = 1)', ribbon=std(res[3], dims = 1)' * quantile.(TDist(reps-1), [0.84]),
-        fillalpha=.1, label = L"\rho = 0.7", color = :red)
+        fillalpha=.1, label = L"\rho = 0.7", marker=([:circ :d],3,1,stroke(2,:red)), color = :red)
 plot!(p1, dt, mean(res[5], dims = 1)', ribbon=std(res[5], dims = 1)' * quantile.(TDist(reps-1), [0.84]),
-        fillalpha=.1, label = L"\rho = 0.01", color = :green)
-title!(p1, L"\textrm{\sffamily (a) Corr and sampling interval (} \lambda=1/5 \textrm{\sffamily , T = 28800, Dir.)}")
-ylabel!(p1, L"\textrm{Correlation } \bar{\rho}")
-xlabel!(p1, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
+        fillalpha=.1, label = L"\rho = 0.01", marker=([:+ :d],3,1,stroke(2,:green)), color = :green)
+ylabel!(p1, L"\rho(\Delta t)")
+xlabel!(p1, L"\Delta t \textrm{ [sec]}")
 
-savefig(p1, "Plots/100DPI/3Asset1DK.png")
-savefig(p1, "Plots/300DPI/3Asset1DK.png")
-savefig(p1, "Plots/3Asset1DK.pdf")
+savefig(p1, "Plots/MM-NUFFT/3Asset1DK.svg")
 
-# p2 = plot(dt, mean(res[2], dims = 1)', ribbon = std(res[2], dims = 1)' * quantile.(TDist(reps-1), [0.975]),
-#         fillalpha=.1, label = L"\rho = -0.5", legend = :bottomright, legendtitle="Induced")
-# plot!(p2, dt, mean(res[4], dims = 1)', ribbon=std(res[4], dims = 1)' * quantile.(TDist(reps-1), [0.975]),
-#         fillalpha=.1, label = L"\rho = 0.7", color = :red)
-# plot!(p2, dt, mean(res[6], dims = 1)', ribbon=std(res[6], dims = 1)' * quantile.(TDist(reps-1), [0.975]),
-#         fillalpha=.1, label = L"\rho = 0.01", color = :green)
-# title!(p2, L"\textrm{\sffamily (b) Corr and sampling interval (} \lambda=1/5 \textrm{\sffamily , T = 28800, Fej.)}")
-# ylabel!(p2, L"\textrm{Correlation } \rho")
-# xlabel!(p2, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
-#
-# savefig(p1, "Plots/3Asset1FK.pdf")
-
-p1 = plot(dt, res[1]', legend = false, dpi = 300, ylims = (-0.7, 0.8))
-plot!(p1, dt, res[3]');plot!(p1, dt, res[5]')
 
 #---------------------------------------------------------------------------
 
@@ -157,28 +140,13 @@ res = load("Computed Data/TimeScale/3Asset2.jld")
 res = res["res2"]
 
 p1 = plot(dt, mean(res[1], dims = 1)', ribbon = std(res[1], dims = 1)' * quantile.(TDist(reps-1), [0.84]),
-        fillalpha=.1, label = L"\rho = 0.5", legend = :bottomright, legendtitle="Induced",
-        dpi = 300, ylims = (-0.7, 0.8))
+        fillalpha=.1, label = L"\rho = -0.5", legend = :bottomright, legendtitle="Induced",
+        dpi = 300, ylims = (-0.7, 0.8), marker=([:x :d],3,1,stroke(2,:blue)), color = :blue)
 plot!(p1, dt, mean(res[3], dims = 1)', ribbon=std(res[3], dims = 1)' * quantile.(TDist(reps-1), [0.84]),
-        fillalpha=.1, label = L"\rho = 0.7", color = :red)
+        fillalpha=.1, label = L"\rho = 0.7", marker=([:circ :d],3,1,stroke(2,:red)), color = :red)
 plot!(p1, dt, mean(res[5], dims = 1)', ribbon=std(res[5], dims = 1)' * quantile.(TDist(reps-1), [0.84]),
-        fillalpha=.1, label = L"\rho = 0.01", color = :green)
-title!(p1, L"\textrm{\sffamily (b) Corr and sampling interval (} \lambda=1/5 \textrm{\sffamily , T = 28800, Dir.)}")
-ylabel!(p1, L"\textrm{Correlation } \bar{\rho}")
-xlabel!(p1, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
+        fillalpha=.1, label = L"\rho = 0.01", marker=([:+ :d],3,1,stroke(2,:green)), color = :green)
+ylabel!(p1, L"\rho(\Delta t)")
+xlabel!(p1, L"\Delta t \textrm{ [sec]}")
 
-savefig(p1, "Plots/100DPI/3Asset2DK.png")
-savefig(p1, "Plots/300DPI/3Asset2DK.png")
-savefig(p1, "Plots/3Asset2DK.pdf")
-
-# p2 = plot(dt, mean(res[2], dims = 1)', ribbon = std(res[2], dims = 1)' * quantile.(TDist(reps-1), [0.975]),
-#         fillalpha=.1, label = L"\rho = 0.5", legend = :right, legendtitle="Induced")
-# plot!(p2, dt, mean(res[4], dims = 1)', ribbon=std(res[4], dims = 1)' * quantile.(TDist(reps-1), [0.975]),
-#         fillalpha=.1, label = L"\rho = 0.7", color = :red)
-# plot!(p2, dt, mean(res[6], dims = 1)', ribbon=std(res[6], dims = 1)' * quantile.(TDist(reps-1), [0.975]),
-#         fillalpha=.1, label = L"\rho = 0.01", color = :green)
-# title!(p2, L"\textrm{\sffamily (d) Corr and sampling interval (} \lambda=1/5 \textrm{\sffamily , T = 28800, Fej.)}")
-# ylabel!(p2, L"\textrm{Correlation } \rho")
-# xlabel!(p2, L"\textrm{Sampling interval } \Delta t \textrm{ [seconds]}")
-#
-# savefig(p1, "Plots/3Asset2FK.pdf")
+savefig(p1, "Plots/MM-NUFFT/3Asset2DK.svg")

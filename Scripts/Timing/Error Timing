@@ -4,9 +4,9 @@
 # We plot the compute time as a function of the errors
 # and we use the FFT and Zero Padded FFT as a baseline for comparison.
 
-using ProgressMeter; using JLD; using LaTeXStrings; using Plots
+using ProgressMeter, JLD, LaTeXStrings, Plots
 
-cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
+cd("/Users/patrickchang1/PCEPTG-MSC")
 
 include("../../Functions/Correlation Estimators/Dirichlet/FFTcorrDK")
 include("../../Functions/Correlation Estimators/Dirichlet/FFTZPcorrDK")
@@ -22,8 +22,8 @@ include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-KB")
 include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-ES")
 include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FINUFFT")
 
-include("../../Functions/Monte Carlo Simulation Algorithms/GBM")
-include("../../Functions/Monte Carlo Simulation Algorithms/RandCovMat")
+include("../../Functions/SDEs/GBM")
+include("../../Functions/SDEs/RandCovMat")
 
 #---------------------------------------------------------------------------
 # Timing Functions
@@ -288,50 +288,30 @@ KBtol = [10^-3; 10.0.^n2]
 
 xticklabel = [L"10^{-3}", L"10^{-4}", L"10^{-5}", L"10^{-6}", L"10^{-7}", L"10^{-8}", L"10^{-9}", L"10^{-10}", L"10^{-11}", L"10^{-12}", L"10^{-13}", L"10^{-14}"]
 
-styles = filter((s->begin
-                s in Plots.supported_styles()
-            end), [:dash, :dot])
-styles = reshape(styles, 1, length(styles))
-
 # Dirichlet
-p1 = plot(n1, log.(minimum(FGGtimesDK, dims=1)'),
- label = "FGG", legendtitle="Method",
-  legend=:topright, line=(2, :dash),
-   xticks = (n1, xticklabel))
-plot!(p1, [-3; n2],
-    log.([minimum(KBtimesDK, dims=1); minimum(FINUFFTtimesDK, dims=1)]'),
-    label = ["KB" "FINUFFT"], line=(2, styles), dpi = 300, ylims = (-4, 5))
-hline!(p1, log.([minimum(FFTtimesDK)]), label = "FFT", line=(2, [:solid]))
-hline!(p1, log.([minimum(FFTZPtimesDK)]), label = "ZFFT", line=(2, [:solid]))
-plot!(p1, [-3; n2], log.(minimum(EStimesDK, dims=1)'), label = "ES", line=(2, :dash), color = :red)
-title!(p1, L"\textrm{\sffamily (a) Compute time and tolerance (Dir., 2-Assets, n =} 10^5\textrm{\sffamily )}")
-ylabel!(p1, L"\textrm{Time ln} (s)")
-xlabel!(p1, L"\textrm{Tolerance } \epsilon")
+p1 = plot(n1, log.(minimum(FGGtimesDK, dims=1)'), xticks = (n1, xticklabel), legend=:topright, legendtitle="Method", color = :blue, line=(2, [:dot]), label = L"\textrm{FGG}", marker=([:circ :d],3,1,stroke(2,:blue)), dpi = 300, ylims = (-4, 5))
+plot!(p1, [-3; n2], log.(minimum(KBtimesDK, dims=1)'), color = :brown, line=(2, [:dot]), label = L"\textrm{KB}", marker=([:x :d],3,1,stroke(2,:brown)))
+plot!(p1, [-3; n2], log.(minimum(FINUFFTtimesDK, dims=1)'), color = :green, line=(2, [:dot]), label = L"\textrm{FINUFFT}", marker=([:cross :d],3,1,stroke(3,:green)))
+plot!(p1, [-3; n2], log.(minimum(EStimesDK, dims=1)'), color = :red, line=(2, [:dot]), label = L"\textrm{ES}", marker=([:rect :d],3,1,stroke(2,:red)))
+hline!(p1, log.([minimum(FFTtimesDK)]), label = "FFT", line=(1.5, [:dash]), color = :purple)
+hline!(p1, log.([minimum(FFTZPtimesDK)]), label = "ZFFT", line=(1.5, [:dashdot]), color = :gray)
+xlabel!(p1, L"\textrm{Tolerance }\epsilon")
+ylabel!(p1, L"\textrm{Time } [\ln(s)]")
 
+savefig(p1, "Plots/MM-NUFFT/ErrorTimesDK2.svg")
 
-savefig(p1, "Plots/100DPI/ErrorTimesDK2.png")
-savefig(p1, "Plots/300DPI/ErrorTimesDK2.png")
-savefig(p1, "Plots/ErrorTimesDK2.pdf")
 
 # Fejer
-p2 = plot(n1, log.(minimum(FGGtimesFK, dims=1)'),
- label = "FGG", legendtitle="Method",
-  legend=:topright, line=(2, :dash),
-   xticks = (n1, xticklabel))
-plot!(p2, [-3; n2],
- log.([minimum(KBtimesFK, dims=1); minimum(FINUFFTtimesFK, dims=1)]'),
- label = ["KB" "FINUFFT"], line=(2, styles), dpi = 300, ylims = (-4, 5))
-hline!(p2, log.([minimum(FFTtimesFK)]), label = "FFT", line=(2, [:solid]))
-hline!(p2, log.([minimum(FFTZPtimesFK)]), label = "ZFFT", line=(2, [:solid]))
-plot!(p2, [-3; n2], log.(minimum(EStimesFK, dims=1)'), label = "ES", line=(2, :dash), color = :red)
-title!(p2, "(b) Tolerance vs Compute Time \n Fejer 2 Assets (n = 10^6)")
-title!(p2, L"\textrm{\sffamily (b) Compute time and tolerance (Fej., 2-Assets, n =} 10^5\textrm{\sffamily )}")
-ylabel!(p2, L"\textrm{Time ln} (s)")
-xlabel!(p2, L"\textrm{Tolerance } \epsilon")
+p2 = plot(n1, log.(minimum(FGGtimesFK, dims=1)'), xticks = (n1, xticklabel), legend=:topright, legendtitle="Method", color = :blue, line=(2, [:dot]), label = L"\textrm{FGG}", marker=([:circ :d],3,1,stroke(2,:blue)), dpi = 300, ylims = (-4, 5))
+plot!(p2, [-3; n2], log.(minimum(KBtimesFK, dims=1)'), color = :brown, line=(2, [:dot]), label = L"\textrm{KB}", marker=([:x :d],3,1,stroke(2,:brown)))
+plot!(p2, [-3; n2], log.(minimum(FINUFFTtimesFK, dims=1)'), color = :green, line=(2, [:dot]), label = L"\textrm{FINUFFT}", marker=([:cross :d],3,1,stroke(3,:green)))
+plot!(p2, [-3; n2], log.(minimum(EStimesFK, dims=1)'), color = :red, line=(2, [:dot]), label = L"\textrm{ES}", marker=([:rect :d],3,1,stroke(2,:red)))
+hline!(p2, log.([minimum(FFTtimesFK)]), label = "FFT", line=(1.5, [:dash]), color = :purple)
+hline!(p2, log.([minimum(FFTZPtimesFK)]), label = "ZFFT", line=(1.5, [:dashdot]), color = :gray)
+xlabel!(p2, L"\textrm{Tolerance }\epsilon")
+ylabel!(p2, L"\textrm{Time } [\ln(s)]")
 
-savefig(p2, "Plots/100DPI/ErrorTimesFK2.png")
-savefig(p2, "Plots/300DPI/ErrorTimesFK2.png")
-savefig(p2, "Plots/ErrorTimesFK2.pdf")
+savefig(p2, "Plots/MM-NUFFT/ErrorTimesFK2.svg")
 
 
 #---------------------------------------------------------------------------
@@ -441,48 +421,30 @@ KBtol = [10^-3; 10.0.^n2]
 
 xticklabel = [L"10^{-3}", L"10^{-4}", L"10^{-5}", L"10^{-6}", L"10^{-7}", L"10^{-8}", L"10^{-9}", L"10^{-10}", L"10^{-11}", L"10^{-12}", L"10^{-13}", L"10^{-14}"]
 
-styles = filter((s->begin
-                s in Plots.supported_styles()
-            end), [:dash, :dot])
-styles = reshape(styles, 1, length(styles))
-
 # Dirichlet
-p1 = plot(n1, log.(minimum(FGGtimesDK10, dims=1)'),
- label = "FGG", legendtitle="Method",
-  legend=:topright, line=(2, :dash),
-   xticks = (n1, xticklabel), dpi = 300, ylims = (-4, 5))
-plot!(p1, [-3; n2],
-    log.([minimum(KBtimesDK10, dims=1); minimum(FINUFFTtimesDK10, dims=1)]'),
-    label = ["KB" "FINUFFT"], line=(2, styles))
-hline!(p1, log.([minimum(FFTtimesDK10)]), label = "FFT", line=(2, [:solid]))
-hline!(p1, log.([minimum(FFTZPtimesDK10)]), label = "ZFFT", line=(2, [:solid]))
-plot!(p1, [-3; n2], log.(minimum(EStimesDK10, dims=1)'), label = "ES", line=(2, :dash), color = :red)
-title!(p1, L"\textrm{\sffamily (c) Compute time and tolerance (Dir., 10-Assets, n =} 10^5 \textrm{\sffamily )}")
-ylabel!(p1, L"\textrm{Time ln} (s)")
-xlabel!(p1, L"\textrm{Tolerance } \epsilon")
+p3 = plot(n1, log.(minimum(FGGtimesDK10, dims=1)'), xticks = (n1, xticklabel), legend=:topright, legendtitle="Method", color = :blue, line=(2, [:dot]), label = L"\textrm{FGG}", marker=([:circ :d],3,1,stroke(2,:blue)), dpi = 300, ylims = (-4, 5))
+plot!(p3, [-3; n2], log.(minimum(KBtimesDK10, dims=1)'), color = :brown, line=(2, [:dot]), label = L"\textrm{KB}", marker=([:x :d],3,1,stroke(2,:brown)))
+plot!(p3, [-3; n2], log.(minimum(FINUFFTtimesDK10, dims=1)'), color = :green, line=(2, [:dot]), label = L"\textrm{FINUFFT}", marker=([:cross :d],3,1,stroke(3,:green)))
+plot!(p3, [-3; n2], log.(minimum(EStimesDK10, dims=1)'), color = :red, line=(2, [:dot]), label = L"\textrm{ES}", marker=([:rect :d],3,1,stroke(2,:red)))
+hline!(p3, log.([minimum(FFTtimesDK10)]), label = "FFT", line=(1.5, [:dash]), color = :purple)
+hline!(p3, log.([minimum(FFTZPtimesDK10)]), label = "ZFFT", line=(1.5, [:dashdot]), color = :gray)
+xlabel!(p3, L"\textrm{Tolerance }\epsilon")
+ylabel!(p3, L"\textrm{Time } [\ln(s)]")
 
-savefig(p1, "Plots/100DPI/ErrorTimesDK10.png")
-savefig(p1, "Plots/300DPI/ErrorTimesDK10.png")
-savefig(p1, "Plots/ErrorTimesDK10.pdf")
+savefig(p3, "Plots/MM-NUFFT/ErrorTimesDK10.svg")
+
 
 # Fejer
-p2 = plot(n1, log.(minimum(FGGtimesFK10, dims=1)'),
- label = "FGG", legendtitle="Method",
-  legend=:topright, line=(2, :dash),
-   xticks = (n1, xticklabel), dpi = 300, ylims = (-4, 5))
-plot!(p2, [-3; n2],
- log.([minimum(KBtimesFK10, dims=1); minimum(FINUFFTtimesFK10, dims=1)]'),
- label = ["KB" "FINUFFT"], line=(2, styles))
-hline!(p2, log.([minimum(FFTtimesFK10)]), label = "FFT", line=(2, [:solid]))
-hline!(p2, log.([minimum(FFTZPtimesFK10)]), label = "ZFFT", line=(2, [:solid]))
-plot!(p2, [-3; n2], log.(minimum(EStimesFK10, dims=1)'), label = "ES", line=(2, :dash), color = :red)
-title!(p2, L"\textrm{\sffamily (d) Compute time and tolerance (Fej., 10-Assets, n =} 10^5 \textrm{\sffamily )}")
-ylabel!(p2, L"\textrm{Time ln} (s)")
-xlabel!(p2, L"\textrm{Tolerance } \epsilon")
+p4 = plot(n1, log.(minimum(FGGtimesFK10, dims=1)'), xticks = (n1, xticklabel), legend=:topright, legendtitle="Method", color = :blue, line=(2, [:dot]), label = L"\textrm{FGG}", marker=([:circ :d],3,1,stroke(2,:blue)), dpi = 300, ylims = (-4, 5))
+plot!(p4, [-3; n2], log.(minimum(KBtimesFK10, dims=1)'), color = :brown, line=(2, [:dot]), label = L"\textrm{KB}", marker=([:x :d],3,1,stroke(2,:brown)))
+plot!(p4, [-3; n2], log.(minimum(FINUFFTtimesFK10, dims=1)'), color = :green, line=(2, [:dot]), label = L"\textrm{FINUFFT}", marker=([:cross :d],3,1,stroke(3,:green)))
+plot!(p4, [-3; n2], log.(minimum(EStimesFK10, dims=1)'), color = :red, line=(2, [:dot]), label = L"\textrm{ES}", marker=([:rect :d],3,1,stroke(2,:red)))
+hline!(p4, log.([minimum(FFTtimesFK10)]), label = "FFT", line=(1.5, [:dash]), color = :purple)
+hline!(p4, log.([minimum(FFTZPtimesFK10)]), label = "ZFFT", line=(1.5, [:dashdot]), color = :gray)
+xlabel!(p4, L"\textrm{Tolerance }\epsilon")
+ylabel!(p4, L"\textrm{Time } [\ln(s)]")
 
-savefig(p2, "Plots/100DPI/ErrorTimesFK10.png")
-savefig(p2, "Plots/300DPI/ErrorTimesFK10.png")
-savefig(p2, "Plots/ErrorTimesFK10.pdf")
+savefig(p4, "Plots/MM-NUFFT/ErrorTimesFK10.svg")
 
 
 #---------------------------------------------------------------------------
@@ -592,45 +554,27 @@ KBtol = [10^-3; 10.0.^n2]
 
 xticklabel = [L"10^{-3}", L"10^{-4}", L"10^{-5}", L"10^{-6}", L"10^{-7}", L"10^{-8}", L"10^{-9}", L"10^{-10}", L"10^{-11}", L"10^{-12}", L"10^{-13}", L"10^{-14}"]
 
-styles = filter((s->begin
-                s in Plots.supported_styles()
-            end), [:dash, :dot])
-styles = reshape(styles, 1, length(styles))
-
 # Dirichlet
-p1 = plot(n1, log.(minimum(FGGtimesDK100, dims=1)'),
- label = "FGG", legendtitle="Method",
-  legend=:bottomright, line=(2, :dash),
-   xticks = (n1, xticklabel), dpi = 300, ylims = (-4, 5))
-plot!(p1, [-3; n2],
-    log.([minimum(KBtimesDK100, dims=1); minimum(FINUFFTtimesDK100, dims=1)]'),
-    label = ["KB" "FINUFFT"], line=(2, styles))
-hline!(p1, log.([minimum(FFTtimesDK100)]), label = "FFT", line=(2, [:solid]))
-hline!(p1, log.([minimum(FFTZPtimesDK100)]), label = "ZFFT", line=(2, [:solid]))
-plot!(p1, [-3; n2], log.(minimum(EStimesDK100, dims=1)'), label = "ES", line=(2, :dash), color = :red)
-title!(p1, L"\textrm{\sffamily (e) Compute time and tolerance (Dir., 100-Assets, n =} 10^5\textrm{\sffamily )}")
-ylabel!(p1, L"\textrm{Time ln} (s)")
-xlabel!(p1, L"\textrm{Tolerance } \epsilon")
+p5 = plot(n1, log.(minimum(FGGtimesDK100, dims=1)'), xticks = (n1, xticklabel), legend=:bottomright, legendtitle="Method", color = :blue, line=(2, [:dot]), label = L"\textrm{FGG}", marker=([:circ :d],3,1,stroke(2,:blue)), dpi = 300, ylims = (-4, 5))
+plot!(p5, [-3; n2], log.(minimum(KBtimesDK100, dims=1)'), color = :brown, line=(2, [:dot]), label = L"\textrm{KB}", marker=([:x :d],3,1,stroke(2,:brown)))
+plot!(p5, [-3; n2], log.(minimum(FINUFFTtimesDK100, dims=1)'), color = :green, line=(2, [:dot]), label = L"\textrm{FINUFFT}", marker=([:cross :d],3,1,stroke(3,:green)))
+plot!(p5, [-3; n2], log.(minimum(EStimesDK100, dims=1)'), color = :red, line=(2, [:dot]), label = L"\textrm{ES}", marker=([:rect :d],3,1,stroke(2,:red)))
+hline!(p5, log.([minimum(FFTtimesDK100)]), label = "FFT", line=(1.5, [:dash]), color = :purple)
+hline!(p5, log.([minimum(FFTZPtimesDK100)]), label = "ZFFT", line=(1.5, [:dashdot]), color = :gray)
+xlabel!(p5, L"\textrm{Tolerance }\epsilon")
+ylabel!(p5, L"\textrm{Time } [\ln(s)]")
 
-savefig(p1, "Plots/100DPI/ErrorTimesDK100.png")
-savefig(p1, "Plots/300DPI/ErrorTimesDK100.png")
-savefig(p1, "Plots/ErrorTimesDK100.pdf")
+savefig(p5, "Plots/MM-NUFFT/ErrorTimesDK100.svg")
+
 
 # Fejer
-p2 = plot(n1, log.(minimum(FGGtimesFK100, dims=1)'),
- label = "FGG", legendtitle="Method",
-  legend=:bottomright, line=(2, :dash),
-   xticks = (n1, xticklabel), dpi = 300, ylims = (-4, 5))
-plot!(p2, [-3; n2],
- log.([minimum(KBtimesFK100, dims=1); minimum(FINUFFTtimesFK100, dims=1)]'),
- label = ["KB" "FINUFFT"], line=(2, styles))
-hline!(p2, log.([minimum(FFTtimesFK100)]), label = "FFT", line=(2, [:solid]))
-hline!(p2, log.([minimum(FFTZPtimesFK100)]), label = "ZFFT", line=(2, [:solid]))
-plot!(p2, [-3; n2], log.(minimum(EStimesFK100, dims=1)'), label = "ES", line=(2, :dash), color = :red)
-title!(p2, L"\textrm{\sffamily (f) Compute time and tolerance (Fej., 100-Assets, n =} 10^5\textrm{\sffamily )}")
-ylabel!(p2, L"\textrm{Time ln} (s)")
-xlabel!(p2, L"\textrm{Tolerance } \epsilon")
+p6 = plot(n1, log.(minimum(FGGtimesFK100, dims=1)'), xticks = (n1, xticklabel), legend=:bottomright, legendtitle="Method", color = :blue, line=(2, [:dot]), label = L"\textrm{FGG}", marker=([:circ :d],3,1,stroke(2,:blue)), dpi = 300, ylims = (-4, 5))
+plot!(p6, [-3; n2], log.(minimum(KBtimesFK100, dims=1)'), color = :brown, line=(2, [:dot]), label = L"\textrm{KB}", marker=([:x :d],3,1,stroke(2,:brown)))
+plot!(p6, [-3; n2], log.(minimum(FINUFFTtimesFK100, dims=1)'), color = :green, line=(2, [:dot]), label = L"\textrm{FINUFFT}", marker=([:cross :d],3,1,stroke(3,:green)))
+plot!(p6, [-3; n2], log.(minimum(EStimesFK100, dims=1)'), color = :red, line=(2, [:dot]), label = L"\textrm{ES}", marker=([:rect :d],3,1,stroke(2,:red)))
+hline!(p6, log.([minimum(FFTtimesFK100)]), label = "FFT", line=(1.5, [:dash]), color = :purple)
+hline!(p6, log.([minimum(FFTZPtimesFK100)]), label = "ZFFT", line=(1.5, [:dashdot]), color = :gray)
+xlabel!(p6, L"\textrm{Tolerance }\epsilon")
+ylabel!(p6, L"\textrm{Time } [\ln(s)]")
 
-savefig(p2, "Plots/100DPI/ErrorTimesFK100.png")
-savefig(p2, "Plots/300DPI/ErrorTimesFK100.png")
-savefig(p2, "Plots/ErrorTimesFK100.pdf")
+savefig(p6, "Plots/MM-NUFFT/ErrorTimesFK100.svg")
