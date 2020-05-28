@@ -2,7 +2,7 @@
 # Script file to test the various Dirichlet implementations
 # to ensure they are all self consistent
 
-cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
+cd("/Users/patrickchang1/PCEPTG-MSC")
 
 using StatsBase; using Random
 include("../Functions/Correlation Estimators/Dirichlet/CFTcorrDK")
@@ -13,7 +13,7 @@ include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FINUFFT")
 include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
 include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-KB")
 include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-ES")
-include("../Functions/Monte Carlo Simulation Algorithms/GBM")
+include("../Functions/SDEs/GBM")
 
 #---------------------------------------------------------------------------
 ## Synchronous Case

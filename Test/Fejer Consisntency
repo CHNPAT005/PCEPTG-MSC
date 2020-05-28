@@ -2,7 +2,7 @@
 # Script file to test the various Fejer implementations
 # to ensure they are all self consistent
 
-cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
+cd("/Users/patrickchang1/PCEPTG-MSC")
 
 using StatsBase
 include("../Functions/Correlation Estimators/Fejer/CFTcorrFK")
@@ -13,7 +13,7 @@ include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FINUFFT")
 include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG")
 include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-KB")
 include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-ES")
-include("../Functions/Monte Carlo Simulation Algorithms/GBM")
+include("../Functions/SDEs/GBM")
 
 #---------------------------------------------------------------------------
 ## Synchronous Case

@@ -5,7 +5,7 @@
 using LinearAlgebra, Plots, LaTeXStrings, StatsBase, Intervals, JLD, ProgressMeter, Distributions, CSV
 #---------------------------------------------------------------------------
 
-cd("/Users/patrickchang1/PCEPTG-EC")
+cd("/Users/patrickchang1/PCEPTG-MSC")
 
 include("../../Functions/Hawkes/Hawkes")
 include("../../Functions/SDEs/GBM")
