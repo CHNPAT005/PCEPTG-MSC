@@ -1,0 +1,164 @@
+## Author: Patrick Chang
+# Script file to investigate the impact of the Epps effect on the
+# instantaneous dynamics of the Malliavin-Mancino estimator and the jump robust
+# adaptation by Cuchiero and Teichmann.
+
+# Note: Investigation will be done with a diffusion process
+# with deterministic correlation; sampled to induce the Epps effect.
+# Then Δt will range from 1-100 seconds with three choices of M.
+
+# Note: The Malliavin-Mancino estimator has the ability to deal with asynchrony
+# while the adaptation by Cuchiero and Teichmann requires the synchronisation
+# of the data beforehand.
+
+using LinearAlgebra, Plots, LaTeXStrings, StatsBase, Intervals, JLD, ProgressMeter, Distributions, CSV
+#---------------------------------------------------------------------------
+
+cd("/Users/patrickchang1/PCEPTG-MSC")
+
+include("../../Functions/Instantaneous Estimators/MM-Inst")
+include("../../Functions/Instantaneous Estimators/MM-JR")
+
+#---------------------------------------------------------------------------
+## Supporting functions
+
+function rexp(n, mean)
+    t = -mean .* log.(rand(n))
+end
+
+function synchronise(P, t1, t2, T, τ)
+    # t1 = [0; t1]
+    # t2 = [0; t2]
+
+    t = collect(0:τ:T)
+    n = length(t)
+    p1 = zeros(n,1)
+    p2 = zeros(n,1)
+    for j in 1:n
+        γ1 = maximum(filter(x-> x .<= t[j], t1))
+        γ2 = maximum(filter(x-> x .<= t[j], t2))
+        p1[j] = P[Int(floor(γ1)+1), 1]
+        p2[j] = P[Int(floor(γ2)+1), 2]
+    end
+    p = [p1 p2]
+    return p
+end
+
+#---------------------------------------------------------------------------
+# Synchronous, ranging through M
+#---------------------------------------------------------------------------
+nsim = 21600
+outlength = 1000
+
+Hest_syn = Heston_CT(nsim, seed = 1, dt = nsim)
+t = collect(1:1:n)
+
+MM_corr_syn = zeros(100, 1000)
+CT_corr_syn = zeros(100, 1000)
+
+M = collect(1:1:100)
+
+for i in 1:length(M)
+    MM_res = MM_inst(Hest_syn[1], [t t], outlength, M = M[i])
+    CT_res = MM_JR(Hest_syn[1], M[i], outlength)
+
+    MM_corr_syn[i,:] = MM_res[3] ./ sqrt.(MM_res[1] .* MM_res[2])
+    CT_corr_syn[i,:] = CT_res[3] ./ sqrt.(CT_res[1] .* CT_res[2])
+end
+
+
+tt = collect(0:1/outlength:1-(1/outlength))
+
+SynM = @animate for i in 1:length(M)
+    now = M[i]
+    plot(collect(1:1:nsim)./nsim, Hest_syn[4] ./ sqrt.(Hest_syn[2] .* Hest_syn[3]), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(0.5, [:solid]))
+    plot!(tt, MM_corr_syn[i,:], label = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", color = :blue, line=(1, [:solid]))
+    plot!(tt, CT_corr_syn[i,:], label = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", color = :red, line=(1, [:dash]))
+    xlabel!(L"\textrm{Time}")
+    ylabel!(L"\textrm{Instantaneous correlation } \rho^{12}(t)")
+    title!(latexstring("\$M = $now\$"))
+end
+
+gif(SynM, "GIFs/SynchronousVaryingM.gif", fps = 10)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# function deterministicCor(t)
+#     return 0.8*sin(t*2*pi*2)
+# end
+#
+# # vol = 2x1 vector of constant volatilities
+# function deterministicDiffusion(n, vol; kwargs...)
+#     # n - simlulation length
+#     # mu - vector input of the drift component
+#     # sigma - covariance matrix of the stocks
+#     # startprice - starting price for the assets
+#
+#     # all inputs must have appropriate dimensions
+#
+#     k = 2
+#
+#     kwargs = Dict(kwargs)
+#
+#     if haskey(kwargs, :startprice)
+#         startprice = kwargs[:startprice]
+#     else
+#         startprice = fill(100.0, (k,1))
+#     end
+#
+#     if haskey(kwargs, :seed)
+#         seed = kwargs[:seed]
+#     else
+#         seed = 1
+#     end
+#
+#     if haskey(kwargs, :dt)
+#         dt = kwargs[:dt]
+#     else
+#         dt = 1
+#     end
+#
+#     P = zeros(n, k)
+#     P[1,:] = startprice
+#
+#     Random.seed!(seed)
+#     Z = randn(k, n-1)
+#
+#     for i in 2:n
+#         ρ = deterministicCor(i/n)
+#         sigma = [vol[1] sqrt(vol[1]*vol[2])*ρ; sqrt(vol[1]*vol[2])*ρ vol[2]]
+#         sigma = reshape(sigma, k, k)
+#         sigma2 = reshape(diag(sigma), k, 1)
+#         # A = cholesky(sigma).L
+#         A = [1 0; ρ sqrt(1-ρ^2)]
+#         b = mu - sigma2./2
+#
+#         z = Z[:,i-1]
+#         X = b./dt + (A * (z.*vol))./sqrt(dt)
+#         P[i,:] = P[i-1,:] .* exp.(X)
+#     end
+#     return P
+# end
+#
+# t = collect(1:100)/100
+# plot(t, deterministicCor.(t))
+#
+# test = deterministicDiffusion(21600, [0.01; 0.02], dt = 21600)

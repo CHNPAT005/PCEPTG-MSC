@@ -51,9 +51,12 @@ function MM_inst(p, t, outlength; kwargs...)
     # Re-scale trading times
     tau = scale(t)
     # Computing minimum time change
-    # minumum step size to avoid smoothing
-    dtau = diff(filter(!isnan, tau))
-    taumin = minimum(filter((x) -> x>0, dtau))
+    dtau = zeros(mp,1)
+    for i in 1:mp
+        dtau[i] = minimum(diff(filter(!isnan, tau[:,i])))
+    end
+    # maximum of minumum step size to avoid aliasing
+    taumin = maximum(dtau)
     taumax = 2*pi
     # Sampling Freq.
     N0 = taumax/taumin
@@ -89,9 +92,10 @@ function MM_inst(p, t, outlength; kwargs...)
     end
 
     # if input is 1D return 1D solutions
-    if mp == 1
-        return MM_inst1D(p, t, outlength, N, M, T)
-    end
+    # if mp == 1
+    #     t = (t .- minimum(t)) .* (1 / (maximum(t) - minimum(t)))
+    #     return MM_inst1D(p, t, outlength, N, M, T)
+    # end
 
     #------------------------------------------------------
 
@@ -109,7 +113,7 @@ function MM_inst(p, t, outlength; kwargs...)
         Time = Time[1:(end-1)]
 
         C = NUFFTFGG(DiffP, Time, Den, tol)
-        C = conj(C) ./ T
+        # C = conj(C) ./ T
 
         c_ks[i,:] = [C[Int(ceil(Den/2))+1:end]; C[1:Int(ceil(Den/2))]]
     end
@@ -119,7 +123,8 @@ function MM_inst(p, t, outlength; kwargs...)
     α_12 = zeros(ComplexF64, 1, 2*M+1)
     α_22 = zeros(ComplexF64, 1, 2*M+1)
 
-    cent = Int(ceil(Den/2))
+    # cent = Int(ceil(Den/2))
+    cent = N + M + 1
 
     for k in -M:M
         α_11[k+M+1] = 0.0
@@ -152,11 +157,6 @@ function MM_inst(p, t, outlength; kwargs...)
 
     return real(σ_11), real(σ_22), real(σ_12)
 end
-
-
-# test3 = [test2[Int(ceil(length(k)/2))+1:end]; test2[1:Int(ceil(length(k)/2))]]
-# kk = collect(-25:1:25)
-# test4 = (cj' * exp.(-1im .* xj * kk'))'
 
 function MM_inst1D(p, t, outlength, N, M, T=1)
     n = length(p); con = 2*pi/T;
@@ -192,43 +192,3 @@ function MM_inst1D(p, t, outlength, N, M, T=1)
     end
     return real(σ_11)
 end
-
-#---------------------------------------------------------------------------
-
-# function Dirichlet(x, N)
-#     num = sin(x*(N+0.5))
-#     den = sin(x/2)
-#     if x == 0
-#         return 1
-#     else
-#         return (num/den) * (1/(2*N+1))
-#     end
-# end
-#
-# function Fejer(x, N)
-#     num = sin((N+1)*x/2)^2
-#     den = sin(x/2)^2
-#     if x == 0
-#         return N
-#     else
-#         return (num/den) * (1/(N+1))
-#     end
-# end
-#
-# function MM_inst1D(p, t, outlength, N, M, T=1)
-#     r = diff(log.(p), dims = 1)
-#     n = length(r)
-#     t = t[1:end-1]
-#
-#     tt = collect(0:1/outlength:T-(1/outlength))
-#     σ_11 = zeros(ComplexF64, outlength, 1)
-#     for k in 1:outlength
-#         σ_11[k] = 0.0
-#         for i in 1:n
-#             for j in 1:n
-#                 σ_11[k] += Fejer(2*pi/T * (tt[k] - t[j]), M) * Dirichlet(2*pi/T * (t[i] - t[j]), N) * r[i] * r[j] / T
-#             end
-#         end
-#     end
-#     return real(σ_11)
-# end
