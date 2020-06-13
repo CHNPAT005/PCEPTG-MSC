@@ -26,14 +26,14 @@ function ϵ_t(t, j, N, T)
     end
 end
 
-function hat_X(dj, N, n, T=1)
-    res = zeros(N, 1)
+function hat_X(dj, N, n, outlength, T=1)
+    res = zeros(outlength, 1)
     t = collect(0:1/n:T-(1/n))
-    tt = collect(0:1/N:T-(1/N))
+    tt = collect(0:1/outlength:T-(1/outlength))
 
     # gj = dj.^2
 
-    for i in 1:N
+    for i in 1:outlength
         ϵ = 0.0
         for j in 1:N
             # inner = sum(gj .* ϵ_t.(t, j, N, 1))
@@ -48,7 +48,7 @@ function hat_X(dj, N, n, T=1)
     return res
 end
 
-function LRV(p, N, T=1)
+function LRV(p, N, outlength, T=1)
     n = size(p)[1] - 1
     y1 = log.(p[:,1])
     y2 = log.(p[:,2])
@@ -57,9 +57,9 @@ function LRV(p, N, T=1)
     dj_2 = diff(y2, dims = 1)
     dj_12 = diff(y1+y2, dims = 1)
 
-    sighat_1 = hat_X(dj_1, N, n, T)
-    sighat_2 = hat_X(dj_2, N, n, T)
-    sighat_12 = 0.5 .* ( hat_X(dj_12, N, n, T) - sighat_1 - sighat_2 )
+    sighat_1 = hat_X(dj_1, N, n, outlength, T)
+    sighat_2 = hat_X(dj_2, N, n, outlength, T)
+    sighat_12 = 0.5 .* ( hat_X(dj_12, N, n, outlength, T) - sighat_1 - sighat_2 )
 
     return sighat_1, sighat_2, sighat_12
 end

@@ -10,6 +10,7 @@ cd("/Users/patrickchang1/PCEPTG-MSC")
 
 include("../../Functions/Instantaneous Estimators/MM-Inst")
 include("../../Functions/Instantaneous Estimators/MM-JR")
+include("../../Functions/Instantaneous Estimators/LRV")
 
 include("../../Functions/SDEs/GBM")
 include("../../Functions/SDEs/Merton Model")
@@ -129,6 +130,7 @@ t = collect(1:1:nsim)
 
 MM_Heston = MM_inst(P_Heston[1], [t t], outlength, M = M, N = N)
 JR_Heston = MM_JR(P_Heston[1], M, outlength)
+LRV_Heston = LRV(P_Heston[1], 500, 500)
 
 
 tt = collect(0:1/outlength:1-(1/outlength))
@@ -160,6 +162,14 @@ ylabel!(p3, L"\textrm{Instantaneous covariance of } \Sigma^{12}(t)")
 
 # savefig(p3, "Plots/Instantaneous/SynHeston12.svg")
 
+tt = collect(0:1/500:1-(1/500))
+ttt = collect(0:1/outlength:1-(1/outlength))
+p4 = plot(t, P_Heston[2], label = L"\textrm{True } \Sigma^{11}(t)", color = :lightblue, line=(1, [:solid]), dpi = 300)
+plot!(p4, tt, LRV_Heston[1], label = L"\textrm{LRV } \hat{\Sigma}^{11}_{M}(t)", color = :orange, line=(0.3, [:solid]), alpha = 0.5)
+plot!(p4, ttt, MM_Heston[1], label = L"\textrm{Estimated MM } \hat{\Sigma}^{11}_{n,N,M}(t)", color = :blue, line=(1, [:solid]))
+plot!(p4, ttt, JR_Heston[1], label = L"\textrm{Estimated CT } \hat{\Sigma}^{11}_{n,M}(t)", color = :red, line=(1, [:dash]))
+xlabel!(p4, L"\textrm{Time}")
+ylabel!(p4, L"\textrm{Instantaneous covariance of } \Sigma^{11}(t)")
 
 #---------------------------------------------------------------------------
 ## Synchronous, Stochastic Volatility, With Jumps - Bates

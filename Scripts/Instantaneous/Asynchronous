@@ -98,7 +98,7 @@ JR_GBM = MM_JR(P_GBM_syn, M, outlength)
 # Plot
 tt = collect(0:1/outlength:1-(1/outlength))
 
-p1 = plot(tt, MM_GBM[1], label = L"\textrm{Estimated MM } \hat{\Sigma}^{11}_{n,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (0, 0.45), dpi = 300)
+p1 = plot(tt, MM_GBM[1], label = L"\textrm{Estimated MM } \hat{\Sigma}^{11}_{n_1,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (0, 0.45), dpi = 300)
 plot!(p1, tt, JR_GBM[1], label = L"\textrm{Estimated CT } \hat{\Sigma}^{11}_{n,M}(t)", color = :red, line=(1, [:dash]))
 hline!(p1, [0.1], label = L"\textrm{True } \Sigma^{11}(t)", color = :black, line=(1, [:solid]))
 xlabel!(p1, L"\textrm{Time}")
@@ -107,7 +107,7 @@ ylabel!(p1, L"\textrm{Instantaneous variance of } \Sigma^{11}(t)")
 # savefig(p1, "Plots/Instantaneous/AsynGBM11.svg")
 
 
-p2 = plot(tt, MM_GBM[2], label = L"\textrm{Estimated MM } \hat{\Sigma}^{22}_{n,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (0, 1.6), dpi = 300)
+p2 = plot(tt, MM_GBM[2], label = L"\textrm{Estimated MM } \hat{\Sigma}^{22}_{n_2,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (0, 1.6), dpi = 300)
 plot!(p2, tt, JR_GBM[2], label = L"\textrm{Estimated CT } \hat{\Sigma}^{22}_{n,M}(t)", color = :red, line=(1, [:dash]))
 hline!(p2, [0.2], label = L"\textrm{True } \Sigma^{22}(t)", color = :black, line=(1, [:solid]))
 xlabel!(p2, L"\textrm{Time}")
@@ -116,7 +116,7 @@ ylabel!(p2, L"\textrm{Instantaneous variance of } \Sigma^{22}(t)")
 # savefig(p2, "Plots/Instantaneous/AsynGBM22.svg")
 
 
-p3 = plot(tt, MM_GBM[3], label = L"\textrm{Estimated MM } \hat{\Sigma}^{12}_{n,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (-0.04, 0.053), dpi = 300)
+p3 = plot(tt, MM_GBM[3], label = L"\textrm{Estimated MM } \hat{\Sigma}^{12}_{n_1,n_2,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (-0.04, 0.053), dpi = 300)
 plot!(p3, tt, JR_GBM[3], label = L"\textrm{Estimated CT } \hat{\Sigma}^{12}_{n,M}(t)", color = :red, line=(1, [:dash]))
 hline!(p3, [sqrt(0.1)*0.35*sqrt(0.2)], label = L"\textrm{True } \Sigma^{12}(t)", color = :black, line=(1, [:solid]))
 xlabel!(p3, L"\textrm{Time}")
@@ -190,7 +190,7 @@ JR_Mert = MM_JR(P_Mert_syn, M, outlength)
 # Plot
 tt = collect(0:1/outlength:1-(1/outlength))
 
-p1 = plot(tt, MM_Mert[1], label = L"\textrm{Estimated MM } \hat{\Sigma}^{11}_{n,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (0, 0.45), dpi = 300)
+p1 = plot(tt, MM_Mert[1], label = L"\textrm{Estimated MM } \hat{\Sigma}^{11}_{n_1,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (0, 0.45), dpi = 300)
 plot!(p1, tt, JR_Mert[1], label = L"\textrm{Estimated CT } \hat{\Sigma}^{11}_{n,M}(t)", color = :red, line=(1, [:dash]))
 hline!(p1, [0.1], label = L"\textrm{True } \Sigma^{11}(t)", color = :black, line=(1, [:solid]))
 xlabel!(p1, L"\textrm{Time}")
@@ -199,7 +199,7 @@ ylabel!(p1, L"\textrm{Instantaneous variance of } \Sigma^{11}(t)")
 # savefig(p1, "Plots/Instantaneous/AsynMert11.svg")
 
 
-p2 = plot(tt, MM_Mert[2], label = L"\textrm{Estimated MM } \hat{\Sigma}^{22}_{n,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (0, 1.6), dpi = 300)
+p2 = plot(tt, MM_Mert[2], label = L"\textrm{Estimated MM } \hat{\Sigma}^{22}_{n_2,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (0, 1.6), dpi = 300)
 plot!(p2, tt, JR_Mert[2], label = L"\textrm{Estimated CT } \hat{\Sigma}^{22}_{n,M}(t)", color = :red, line=(1, [:dash]))
 hline!(p2, [0.2], label = L"\textrm{True } \Sigma^{22}(t)", color = :black, line=(1, [:solid]))
 xlabel!(p2, L"\textrm{Time}")
@@ -208,7 +208,7 @@ ylabel!(p2, L"\textrm{Instantaneous variance of } \Sigma^{22}(t)")
 # savefig(p2, "Plots/Instantaneous/AsynMert22.svg")
 
 
-p3 = plot(tt, MM_Mert[3], label = L"\textrm{Estimated MM } \hat{\Sigma}^{12}_{n,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (-0.04, 0.053), dpi = 300)
+p3 = plot(tt, MM_Mert[3], label = L"\textrm{Estimated MM } \hat{\Sigma}^{12}_{n_1,n_2,N,M}(t)", color = :blue, line=(1, [:solid]), ylims = (-0.04, 0.053), dpi = 300)
 plot!(p3, tt, JR_Mert[3], label = L"\textrm{Estimated CT } \hat{\Sigma}^{12}_{n,M}(t)", color = :red, line=(1, [:dash]))
 hline!(p3, [sqrt(0.1)*0.35*sqrt(0.2)], label = L"\textrm{True } \Sigma^{12}(t)", color = :black, line=(1, [:solid]))
 xlabel!(p3, L"\textrm{Time}")
@@ -274,7 +274,7 @@ tt = collect(0:1/outlength:1-(1/outlength))
 t = t ./ nsim
 
 p1 = plot(t, P_Heston[2], label = L"\textrm{True } \Sigma^{11}(t)", color = :lightblue, line=(0.5, [:solid]), dpi = 300)
-plot!(p1, tt, MM_Heston[1], label = L"\textrm{Estimated MM } \hat{\Sigma}^{11}_{n,N,M}(t)", color = :blue, line=(1, [:solid]))
+plot!(p1, tt, MM_Heston[1], label = L"\textrm{Estimated MM } \hat{\Sigma}^{11}_{n_1,N,M}(t)", color = :blue, line=(1, [:solid]))
 plot!(p1, tt, JR_Heston[1], label = L"\textrm{Estimated CT } \hat{\Sigma}^{11}_{n,M}(t)", color = :red, line=(1, [:dash]))
 xlabel!(p1, L"\textrm{Time}")
 ylabel!(p1, L"\textrm{Instantaneous variance of } \Sigma^{11}(t)")
@@ -283,17 +283,16 @@ ylabel!(p1, L"\textrm{Instantaneous variance of } \Sigma^{11}(t)")
 
 
 p2 = plot(t, P_Heston[3], label = L"\textrm{True } \Sigma^{22}(t)", color = :lightblue, line=(0.5, [:solid]), dpi = 300)
-plot!(p2, tt, MM_Heston[2], label = L"\textrm{Estimated MM } \hat{\Sigma}^{22}_{n,N,M}(t)", color = :blue, line=(1, [:solid]))
+plot!(p2, tt, MM_Heston[2], label = L"\textrm{Estimated MM } \hat{\Sigma}^{22}_{n_2,N,M}(t)", color = :blue, line=(1, [:solid]))
 plot!(p2, tt, JR_Heston[2], label = L"\textrm{Estimated CT } \hat{\Sigma}^{22}_{n,M}(t)", color = :red, line=(1, [:dash]))
 xlabel!(p2, L"\textrm{Time}")
 ylabel!(p2, L"\textrm{Instantaneous variance of } \Sigma^{22}(t)")
-
 
 # savefig(p2, "Plots/Instantaneous/AsynHeston22.svg")
 
 
 p3 = plot(t, P_Heston[4], label = L"\textrm{True } \Sigma^{12}(t)", color = :lightblue, line=(0.5, [:solid]), dpi = 300)
-plot!(p3, tt, MM_Heston[3], label = L"\textrm{Estimated MM } \hat{\Sigma}^{12}_{n,N,M}(t)", color = :blue, line=(1, [:solid]))
+plot!(p3, tt, MM_Heston[3], label = L"\textrm{Estimated MM } \hat{\Sigma}^{12}_{n_1,n_2,N,M}(t)", color = :blue, line=(1, [:solid]))
 plot!(p3, tt, JR_Heston[3], label = L"\textrm{Estimated CT } \hat{\Sigma}^{12}_{n,M}(t)", color = :red, line=(1, [:dash]))
 xlabel!(p3, L"\textrm{Time}")
 ylabel!(p3, L"\textrm{Instantaneous covariance of } \Sigma^{12}(t)")
@@ -358,7 +357,7 @@ tt = collect(0:1/outlength:1-(1/outlength))
 t = t ./ nsim
 
 p1 = plot(t, P_Bates[2], label = L"\textrm{True } \Sigma^{11}(t)", color = :lightblue, line=(0.5, [:solid]), dpi = 300)
-plot!(p1, tt, MM_Bates[1], label = L"\textrm{Estimated MM } \hat{\Sigma}^{11}_{n,N,M}(t)", color = :blue, line=(1, [:solid]))
+plot!(p1, tt, MM_Bates[1], label = L"\textrm{Estimated MM } \hat{\Sigma}^{11}_{n_1,N,M}(t)", color = :blue, line=(1, [:solid]))
 plot!(p1, tt, JR_Bates[1], label = L"\textrm{Estimated CT } \hat{\Sigma}^{11}_{n,M}(t)", color = :red, line=(1, [:dash]))
 xlabel!(p1, L"\textrm{Time}")
 ylabel!(p1, L"\textrm{Instantaneous variance of } \Sigma^{11}(t)")
@@ -367,7 +366,7 @@ ylabel!(p1, L"\textrm{Instantaneous variance of } \Sigma^{11}(t)")
 
 
 p2 = plot(t, P_Bates[3], label = L"\textrm{True } \Sigma^{22}(t)", color = :lightblue, line=(0.5, [:solid]), dpi = 300)
-plot!(p2, tt, MM_Bates[2], label = L"\textrm{Estimated MM } \hat{\Sigma}^{22}_{n,N,M}(t)", color = :blue, line=(1, [:solid]))
+plot!(p2, tt, MM_Bates[2], label = L"\textrm{Estimated MM } \hat{\Sigma}^{22}_{n_2,N,M}(t)", color = :blue, line=(1, [:solid]))
 plot!(p2, tt, JR_Bates[2], label = L"\textrm{Estimated CT } \hat{\Sigma}^{22}_{n,M}(t)", color = :red, line=(1, [:dash]))
 xlabel!(p2, L"\textrm{Time}")
 ylabel!(p2, L"\textrm{Instantaneous variance of } \Sigma^{22}(t)")
@@ -376,7 +375,7 @@ ylabel!(p2, L"\textrm{Instantaneous variance of } \Sigma^{22}(t)")
 
 
 p3 = plot(t, P_Bates[4], label = L"\textrm{True } \Sigma^{12}(t)", color = :lightblue, line=(0.5, [:solid]), dpi = 300)
-plot!(p3, tt, MM_Bates[3], label = L"\textrm{Estimated MM } \hat{\Sigma}^{12}_{n,N,M}(t)", color = :blue, line=(1, [:solid]))
+plot!(p3, tt, MM_Bates[3], label = L"\textrm{Estimated MM } \hat{\Sigma}^{12}_{n_1,n_2,N,M}(t)", color = :blue, line=(1, [:solid]))
 plot!(p3, tt, JR_Bates[3], label = L"\textrm{Estimated CT } \hat{\Sigma}^{12}_{n,M}(t)", color = :red, line=(1, [:dash]))
 xlabel!(p3, L"\textrm{Time}")
 ylabel!(p3, L"\textrm{Instantaneous covariance of } \Sigma^{12}(t)")
