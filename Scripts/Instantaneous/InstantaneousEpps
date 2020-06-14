@@ -49,7 +49,7 @@ end
 #---------------------------------------------------------------------------
 # Synchronous, ranging through M, N is Nyquist
 #---------------------------------------------------------------------------
-nsim = 21600
+nsim = 28800
 outlength = 1000
 
 Hest_syn = Heston_CT(nsim, seed = 1, dt = nsim)
@@ -94,7 +94,7 @@ p4 = contour(tt, M, CT_corr_syn, fill = true, fc = ColorGradient([:red,:yellow,:
 p5 = plot(collect(1:1:nsim)./nsim, Hest_syn[4] ./ sqrt.(Hest_syn[2] .* Hest_syn[3]), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(0.5, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", dpi = 300)
 plot!(p5,tt, MM_corr_syn[100,:], label = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", color = :blue, line=(1, [:solid]))
 plot!(p5,tt, CT_corr_syn[100,:], label = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", color = :red, line=(1, [:dash]), size = (1200,400))
-
+#
 # savefig(p1, "Plots/Instantaneous/SynM_surf_MM.svg")
 # savefig(p2, "Plots/Instantaneous/SynM_HM_MM.png")
 # savefig(p3, "Plots/Instantaneous/SynM_surf_CT.svg")
@@ -104,7 +104,7 @@ plot!(p5,tt, CT_corr_syn[100,:], label = L"\textrm{Estimated CT } \hat{\rho}^{12
 #---------------------------------------------------------------------------
 # Asynchronous, ranging through M, three choices of M
 #---------------------------------------------------------------------------
-nsim = 21600
+nsim = 28800
 outlength = 1000
 lam = 30
 
@@ -195,9 +195,9 @@ gif(AsynM20, "Plots/GIFs/AsynchronousVaryingN_M20.gif", fps = 10)
 gif(AsynM50, "Plots/GIFs/AsynchronousVaryingN_M50.gif", fps = 10)
 
 
-p1 = surface(M, tt, MM_corr_asyn[:,:,1]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p2 = surface(M, tt, MM_corr_asyn[:,:,2]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p3 = surface(M, tt, MM_corr_asyn[:,:,3]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
+p1 = surface(M, tt, MM_corr_asyn[:,:,1]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
+p2 = surface(M, tt, MM_corr_asyn[:,:,2]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
+p3 = surface(M, tt, MM_corr_asyn[:,:,3]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
 
 p4 = contour(tt, M, MM_corr_asyn[:,:,1], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150)
 p5 = contour(tt, M, MM_corr_asyn[:,:,2], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150)

@@ -48,16 +48,16 @@ end
 #---------------------------------------------------------------------------
 ## Asynchronous, Constant Volatility, No Jumps - GBM
 # Setup
-nsim = 21600
+nsim = 28800
 outlength = 1000
 M = 100
 lam = 30
 dt = 1
 N = Int.(floor.(((nsim ./dt).-1.0) ./ 2))
 
-mu = [0.01/21600, 0.01/21600]
-sigma = [0.1/21600 sqrt(0.1/21600)*0.35*sqrt(0.2/21600);
-        sqrt(0.1/21600)*0.35*sqrt(0.2/21600) 0.2/21600]
+mu = [0.01/28800, 0.01/28800]
+sigma = [0.1/28800 sqrt(0.1/28800)*0.35*sqrt(0.2/28800);
+        sqrt(0.1/28800)*0.35*sqrt(0.2/28800) 0.2/28800]
 
 # Simulate and create the price and time matrices
 P_GBM = GBM(nsim, mu, sigma)
@@ -134,20 +134,20 @@ ylabel!(p3, L"\textrm{Instantaneous covariance of } \Sigma^{12}(t)")
 #---------------------------------------------------------------------------
 ## Asynchronous, Constant Volatility, With Jumps - Merton
 # Setup
-nsim = 21600
+nsim = 28800
 outlength = 1000
 M = 100
 lam = 30
 dt = 1
 N = Int.(floor.(((nsim ./dt).-1.0) ./ 2))
 
-mu = [0.01/21600, 0.01/21600]
-sigma = [0.1/21600 sqrt(0.1/21600)*0.35*sqrt(0.2/21600);
-        sqrt(0.1/21600)*0.35*sqrt(0.2/21600) 0.2/21600]
+mu = [0.01/28800, 0.01/28800]
+sigma = [0.1/28800 sqrt(0.1/28800)*0.35*sqrt(0.2/28800);
+        sqrt(0.1/28800)*0.35*sqrt(0.2/28800) 0.2/28800]
 
 a = [-0.005; -0.003]
 b= [0.015; 0.02]
-lambda = [100/21600, 100/21600]
+lambda = [100/28800, 100/28800]
 
 # Simulate and create the price and time matrices
 P_Mert = Merton(nsim, mu, sigma, lambda, a, b)
@@ -225,7 +225,7 @@ ylabel!(p3, L"\textrm{Instantaneous covariance of } \Sigma^{12}(t)")
 
 #---------------------------------------------------------------------------
 ## Asynchronous, Stochastic Volatility, No Jumps - Heston
-nsim = 21600
+nsim = 28800
 outlength = 1000
 M = 100
 lam = 30
@@ -308,7 +308,7 @@ ylabel!(p3, L"\textrm{Instantaneous covariance of } \Sigma^{12}(t)")
 
 #---------------------------------------------------------------------------
 ## Asynchronous, Stochastic Volatility, With Jumps - Bates
-nsim = 21600
+nsim = 28800
 outlength = 1000
 M = 100
 lam = 30
