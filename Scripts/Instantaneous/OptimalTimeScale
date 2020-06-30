@@ -143,8 +143,8 @@ end
 gif(MM_syn, "Plots/GIFs/OT_MM_syn.gif", fps = 10)
 
 
-p2 = surface(M_syn, tt, MM_corr_syn', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p3 = contour(tt, M_syn, MM_corr_syn, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150)
+p2 = surface(M_syn, tt, MM_corr_syn', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p3 = contour(tt, M_syn, MM_corr_syn, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
 
 t = collect(1:1:nsim)/nsim
 tt = collect(0:1/outlength:1-(1/outlength))
@@ -235,8 +235,8 @@ end
 gif(MM_asyn_lam10, "Plots/GIFs/OT_MM_asyn_lam10.gif", fps = 10)
 
 
-p2 = surface(M_lam10, tt, MM_corr_lam10', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p3 = contour(tt, M_lam10, MM_corr_lam10, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150)
+p2 = surface(M_lam10, tt, MM_corr_lam10', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p3 = contour(tt, M_lam10, MM_corr_lam10, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
 
 t = collect(1:1:nsim)/nsim
 tt = collect(0:1/outlength:1-(1/outlength))
@@ -328,8 +328,8 @@ end
 gif(MM_asyn_lam20, "Plots/GIFs/OT_MM_asyn_lam20.gif", fps = 10)
 
 
-p2 = surface(M_lam20, tt, MM_corr_lam20', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p3 = contour(tt, M_lam20, MM_corr_lam20, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150)
+p2 = surface(M_lam20, tt, MM_corr_lam20', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p3 = contour(tt, M_lam20, MM_corr_lam20, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
 
 t = collect(1:1:nsim)/nsim
 tt = collect(0:1/outlength:1-(1/outlength))
@@ -422,8 +422,8 @@ end
 gif(MM_asyn_lam50, "Plots/GIFs/OT_MM_asyn_lam50.gif", fps = 5)
 
 
-p2 = surface(M_lam50, tt, MM_corr_lam50', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p3 = contour(tt, M_lam50, MM_corr_lam50, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150)
+p2 = surface(M_lam50, tt, MM_corr_lam50', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p3 = contour(tt, M_lam50, MM_corr_lam50, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
 
 t = collect(1:1:nsim)/nsim
 tt = collect(0:1/outlength:1-(1/outlength))

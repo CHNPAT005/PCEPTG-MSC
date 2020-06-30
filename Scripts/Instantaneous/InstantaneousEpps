@@ -84,12 +84,12 @@ end
 gif(SynM, "Plots/GIFs/SynchronousVaryingM.gif", fps = 10)
 
 # MM
-p1 = surface(M, tt, MM_corr_syn', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p2 = contour(tt, M, MM_corr_syn, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150)
+p1 = surface(M, tt, MM_corr_syn', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p2 = contour(tt, M, MM_corr_syn, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
 
 #CT
-p3 = surface(M, tt, CT_corr_syn', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p4 = contour(tt, M, CT_corr_syn, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150)
+p3 = surface(M, tt, CT_corr_syn', xlabel = L"\textrm{M}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p4 = contour(tt, M, CT_corr_syn, fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\textrm{M}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
 
 p5 = plot(collect(1:1:nsim)./nsim, Hest_syn[4] ./ sqrt.(Hest_syn[2] .* Hest_syn[3]), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(0.5, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", dpi = 300)
 plot!(p5,tt, MM_corr_syn[100,:], label = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", color = :blue, line=(1, [:solid]))
@@ -194,14 +194,14 @@ gif(AsynM10, "Plots/GIFs/AsynchronousVaryingN_M10.gif", fps = 10)
 gif(AsynM20, "Plots/GIFs/AsynchronousVaryingN_M20.gif", fps = 10)
 gif(AsynM50, "Plots/GIFs/AsynchronousVaryingN_M50.gif", fps = 10)
 
+# MM plots
+p1 = surface(dt, tt, MM_corr_asyn[:,:,1]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p2 = surface(dt, tt, MM_corr_asyn[:,:,2]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p3 = surface(dt, tt, MM_corr_asyn[:,:,3]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
 
-p1 = surface(M, tt, MM_corr_asyn[:,:,1]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p2 = surface(M, tt, MM_corr_asyn[:,:,2]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p3 = surface(M, tt, MM_corr_asyn[:,:,3]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-
-p4 = contour(tt, M, MM_corr_asyn[:,:,1], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150)
-p5 = contour(tt, M, MM_corr_asyn[:,:,2], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150)
-p6 = contour(tt, M, MM_corr_asyn[:,:,3], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150)
+p4 = contour(tt, dt, MM_corr_asyn[:,:,1], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
+p5 = contour(tt, dt, MM_corr_asyn[:,:,2], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
+p6 = contour(tt, dt, MM_corr_asyn[:,:,3], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
 
 # savefig(p1, "Plots/Instantaneous/Asyn_surf_MM_M10.svg")
 # savefig(p2, "Plots/Instantaneous/Asyn_surf_MM_M20.svg")
@@ -211,14 +211,14 @@ p6 = contour(tt, M, MM_corr_asyn[:,:,3], fill = true, fc = ColorGradient([:red,:
 # savefig(p6, "Plots/Instantaneous/Asyn_HM_MM_M50.png")
 
 
+# CT plots
+p1 = surface(dt, tt, CT_corr_asyn[:,:,1]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p2 = surface(dt, tt, CT_corr_asyn[:,:,2]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
+p3 = surface(dt, tt, CT_corr_asyn[:,:,3]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300, clim=(-1,1), zlims = (-1, 1))
 
-p1 = surface(M, tt, CT_corr_asyn[:,:,1]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p2 = surface(M, tt, CT_corr_asyn[:,:,2]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-p3 = surface(M, tt, CT_corr_asyn[:,:,3]', xlabel = L"\Delta t \textrm{[sec]}", ylabel = L"\textrm{Time}", zlabel = L"\textrm{Estimated CT } \hat{\rho}^{12}_{\Delta t}(t)", fc=ColorGradient([:red,:yellow,:blue]), camera = (65, 55), dpi = 300)
-
-p4 = contour(tt, M, CT_corr_asyn[:,:,1], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150)
-p5 = contour(tt, M, CT_corr_asyn[:,:,2], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150)
-p6 = contour(tt, M, CT_corr_asyn[:,:,3], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150)
+p4 = contour(tt, dt, CT_corr_asyn[:,:,1], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
+p5 = contour(tt, dt, CT_corr_asyn[:,:,2], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
+p6 = contour(tt, dt, CT_corr_asyn[:,:,3], fill = true, fc = ColorGradient([:red,:yellow,:blue]), ylabel = L"\Delta t \textrm{[sec]}", xlabel = L"\textrm{Time}", dpi = 150, clim=(-1,1))
 
 # savefig(p1, "Plots/Instantaneous/Asyn_surf_CT_M10.svg")
 # savefig(p2, "Plots/Instantaneous/Asyn_surf_CT_M20.svg")
@@ -226,73 +226,3 @@ p6 = contour(tt, M, CT_corr_asyn[:,:,3], fill = true, fc = ColorGradient([:red,:
 # savefig(p4, "Plots/Instantaneous/Asyn_HM_CT_M10.png")
 # savefig(p5, "Plots/Instantaneous/Asyn_HM_CT_M20.png")
 # savefig(p6, "Plots/Instantaneous/Asyn_HM_CT_M50.png")
-
-
-#---------------------------------------------------------------------------
-
-
-
-
-
-
-# function deterministicCor(t)
-#     return 0.8*sin(t*2*pi*2)
-# end
-#
-# # vol = 2x1 vector of constant volatilities
-# function deterministicDiffusion(n, vol; kwargs...)
-#     # n - simlulation length
-#     # mu - vector input of the drift component
-#     # sigma - covariance matrix of the stocks
-#     # startprice - starting price for the assets
-#
-#     # all inputs must have appropriate dimensions
-#
-#     k = 2
-#
-#     kwargs = Dict(kwargs)
-#
-#     if haskey(kwargs, :startprice)
-#         startprice = kwargs[:startprice]
-#     else
-#         startprice = fill(100.0, (k,1))
-#     end
-#
-#     if haskey(kwargs, :seed)
-#         seed = kwargs[:seed]
-#     else
-#         seed = 1
-#     end
-#
-#     if haskey(kwargs, :dt)
-#         dt = kwargs[:dt]
-#     else
-#         dt = 1
-#     end
-#
-#     P = zeros(n, k)
-#     P[1,:] = startprice
-#
-#     Random.seed!(seed)
-#     Z = randn(k, n-1)
-#
-#     for i in 2:n
-#         ρ = deterministicCor(i/n)
-#         sigma = [vol[1] sqrt(vol[1]*vol[2])*ρ; sqrt(vol[1]*vol[2])*ρ vol[2]]
-#         sigma = reshape(sigma, k, k)
-#         sigma2 = reshape(diag(sigma), k, 1)
-#         # A = cholesky(sigma).L
-#         A = [1 0; ρ sqrt(1-ρ^2)]
-#         b = mu - sigma2./2
-#
-#         z = Z[:,i-1]
-#         X = b./dt + (A * (z.*vol))./sqrt(dt)
-#         P[i,:] = P[i-1,:] .* exp.(X)
-#     end
-#     return P
-# end
-#
-# t = collect(1:100)/100
-# plot(t, deterministicCor.(t))
-#
-# test = deterministicDiffusion(21600, [0.01; 0.02], dt = 21600)
