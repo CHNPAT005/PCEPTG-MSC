@@ -25,8 +25,7 @@ using ArgCheck; using LinearAlgebra; using FINUFFT
 #---------------------------------------------------------------------------
 ### Supporting functions
 
-# cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
-include("../../NUFFT/NUFFT-KB")
+include("../../NUFFT/NUFFT-KB.jl")
 
 function scale(t)
     maxt = maximum(filter(!isnan, t))

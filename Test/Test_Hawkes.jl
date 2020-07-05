@@ -4,7 +4,7 @@
 #---------------------------------------------------------------------------
 
 using Plots, LaTeXStrings
-include("../Functions/Hawkes/Hawkes")
+include("../Functions/Hawkes/Hawkes.jl")
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 

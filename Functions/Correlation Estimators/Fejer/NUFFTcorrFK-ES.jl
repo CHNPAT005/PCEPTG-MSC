@@ -3,10 +3,10 @@
 # Supporting Algorithms are at the start of the script
 #  Include:
 #           - Scale function to re-scale time to [0, 2 \pi]
-#           - Fast Gaussian Gridding [GL] (Own implementaion)
+#           - Exponential of Semi-Circle [BMK] (Own naive implementaion)
 # Number of Fourier Coefficients used is length of data
 
-## Implementation uses Fast Gaussian Gridding
+## Implementation uses Exponential of Semi-Circle
 
 #---------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@
 ## t = [n x m] matrix of trading times, non-trading times are indicated by NaNs
 # dimensions of p and t must match.
 ## N = Optional input for cutoff frequency
-## tol = error tolerance for NUFFT - determines how much spreading, default = 10^-12
+## tol = error tolerance for NUFFT - determines how much spreading
 
 #---------------------------------------------------------------------------
 
@@ -25,8 +25,7 @@ using ArgCheck; using LinearAlgebra; using FINUFFT
 #---------------------------------------------------------------------------
 ### Supporting functions
 
-# cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
-include("../../NUFFT/NUFFT-FGG")
+include("../../NUFFT/NUFFT-ES.jl")
 
 function scale(t)
     maxt = maximum(filter(!isnan, t))
@@ -38,9 +37,9 @@ end
 
 #---------------------------------------------------------------------------
 
-# Non-uniform Fast Fourier Transform implementaion of the Dirichlet Kernel
+# Non-uniform Fast Fourier Transform implementaion of the Fejer Kernel
 
-function NUFFTcorrDKFGG(p, t; kwargs...)
+function NUFFTcorrFKES(p, t; kwargs...)
     ## Pre-allocate arrays and check Data
     np = size(p)[1]
     mp = size(p)[2]
@@ -66,8 +65,10 @@ function NUFFTcorrDKFGG(p, t; kwargs...)
 
     if haskey(kwargs, :N)
         k = collect(-kwargs[:N]:1:kwargs[:N])
+        N = kwargs[:N]
     else
         k = collect(-floor(N0/2):1:floor(N0/2))
+        N = floor(N0/2)
     end
 
     if haskey(kwargs, :tol)
@@ -89,15 +90,26 @@ function NUFFTcorrDKFGG(p, t; kwargs...)
         DiffP = complex(diff(log.(P)))
         Time = Time[1:(end-1)]
 
-        C = NUFFTFGG(DiffP, Time, Den, tol)
+        C = NUFFTES(DiffP, Time, Den, tol)
 
         e_pos[i,:] = C
         e_neg[i,:] = conj(C)
     end
 
-    Sigma = zeros(ComplexF64, mp, mp)
+    k = fftfreq(Den, 1) * Den
 
-    Sigma = 0.5 / Den .* (e_pos*e_pos' + e_neg*e_neg')
+    # ------------
+
+    Sigma = zeros(ComplexF64, mp, mp)
+    for i in 1:mp-1
+        for j in i+1:mp
+            Sigma[i,i] = sum( (1 .- abs.(k)./N) .* e_pos[i,:] .* e_neg[i,:] ) / (N+1)
+            Sigma[j,j] = sum( (1 .- abs.(k)./N) .* e_pos[j,:] .* e_neg[j,:] ) / (N+1)
+            Sigma[i,j] = Sigma[j,i] = sum( (1 .- abs.(k)./N) .* e_pos[i,:] .* e_neg[j,:] ) / (N+1)
+        end
+    end
+
+    # ------------
 
     Sigma = real(Sigma)
     var = diag(Sigma)

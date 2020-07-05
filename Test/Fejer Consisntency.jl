@@ -5,15 +5,15 @@
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
 using StatsBase
-include("../Functions/Correlation Estimators/Fejer/CFTcorrFK")
-include("../Functions/Correlation Estimators/Fejer/FFTcorrFK")
-include("../Functions/Correlation Estimators/Fejer/FFTZPcorrFK")
-include("../Functions/Correlation Estimators/Fejer/MScorrFK")
-include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FINUFFT")
-include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG")
-include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-KB")
-include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-ES")
-include("../Functions/SDEs/GBM")
+include("../Functions/Correlation Estimators/Fejer/CFTcorrFK.jl")
+include("../Functions/Correlation Estimators/Fejer/FFTcorrFK.jl")
+include("../Functions/Correlation Estimators/Fejer/FFTZPcorrFK.jl")
+include("../Functions/Correlation Estimators/Fejer/MScorrFK.jl")
+include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FINUFFT.jl")
+include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG.jl")
+include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-KB.jl")
+include("../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-ES.jl")
+include("../Functions/SDEs/GBM.jl")
 
 #---------------------------------------------------------------------------
 ## Synchronous Case

@@ -3,10 +3,10 @@
 # Supporting Algorithms are at the start of the script
 #  Include:
 #           - Scale function to re-scale time to [0, 2 \pi]
-#           - Exponential of Semi-Circle [BMK] (Own naive implementaion)
+#           - Kaiser-Bessel implementation
 # Number of Fourier Coefficients used is length of data
 
-## Implementation uses Exponential of Semi-Circle
+## Implementation uses Kaiser-Bessel
 
 #---------------------------------------------------------------------------
 
@@ -25,8 +25,7 @@ using ArgCheck; using LinearAlgebra; using FINUFFT
 #---------------------------------------------------------------------------
 ### Supporting functions
 
-# cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
-include("../../NUFFT/NUFFT-ES")
+include("../../NUFFT/NUFFT-KB.jl")
 
 function scale(t)
     maxt = maximum(filter(!isnan, t))
@@ -40,7 +39,7 @@ end
 
 # Non-uniform Fast Fourier Transform implementaion of the Dirichlet Kernel
 
-function NUFFTcorrDKES(p, t; kwargs...)
+function NUFFTcorrDKKB(p, t; kwargs...)
     ## Pre-allocate arrays and check Data
     np = size(p)[1]
     mp = size(p)[2]
@@ -87,9 +86,9 @@ function NUFFTcorrDKES(p, t; kwargs...)
         P = p[psii, i]
         Time = tau[psii, i]
         DiffP = complex(diff(log.(P)))
-        Time = Time[1:(end-1)]
+        Time = Time[1:(end-1)] ./ (2*pi) #.- 0.5
 
-        C = NUFFTES(DiffP, Time, Den, tol)
+        C = NUFFTKB(DiffP, Time, Den, tol)
 
         e_pos[i,:] = C
         e_neg[i,:] = conj(C)

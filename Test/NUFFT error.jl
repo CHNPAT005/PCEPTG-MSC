@@ -11,10 +11,9 @@ using LinearAlgebra
 
 #---------------------------------------------------------------------------
 
-cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
-include("../Functions/NUFFT/NUFFT-FGG")
-include("../Functions/NUFFT/NUFFT-KB")
-include("../Functions/NUFFT/NUFFT-ES")
+include("../Functions/NUFFT/NUFFT-FGG.jl")
+include("../Functions/NUFFT/NUFFT-KB.jl")
+include("../Functions/NUFFT/NUFFT-ES.jl")
 
 n = collect(-3:-1:-14)
 tol = 10.0.^n

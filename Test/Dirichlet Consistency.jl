@@ -5,15 +5,15 @@
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
 using StatsBase; using Random
-include("../Functions/Correlation Estimators/Dirichlet/CFTcorrDK")
-include("../Functions/Correlation Estimators/Dirichlet/FFTcorrDK")
-include("../Functions/Correlation Estimators/Dirichlet/FFTZPcorrDK")
-include("../Functions/Correlation Estimators/Dirichlet/MScorrDK")
-include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FINUFFT")
-include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
-include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-KB")
-include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-ES")
-include("../Functions/SDEs/GBM")
+include("../Functions/Correlation Estimators/Dirichlet/CFTcorrDK.jl")
+include("../Functions/Correlation Estimators/Dirichlet/FFTcorrDK.jl")
+include("../Functions/Correlation Estimators/Dirichlet/FFTZPcorrDK.jl")
+include("../Functions/Correlation Estimators/Dirichlet/MScorrDK.jl")
+include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FINUFFT.jl")
+include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG.jl")
+include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-KB.jl")
+include("../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-ES.jl")
+include("../Functions/SDEs/GBM.jl")
 
 #---------------------------------------------------------------------------
 ## Synchronous Case
