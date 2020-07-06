@@ -12,15 +12,15 @@ using Statistics; using Distributions; using ProgressMeter; using JLD; using Dat
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
-include("../../Functions/Correlation Estimators/Dirichlet/MScorrDK")
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
+include("../../Functions/Correlation Estimators/Dirichlet/MScorrDK.jl")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG.jl")
 
 
-include("../../Functions/Correlation Estimators/Fejer/MScorrFK")
-include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG")
+include("../../Functions/Correlation Estimators/Fejer/MScorrFK.jl")
+include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG.jl")
 
-include("../../Functions/Monte Carlo Simulation Algorithms/GBM")
-include("../../Functions/Monte Carlo Simulation Algorithms/RandCovMat")
+include("../../Functions/SDEs/GBM.jl")
+include("../../Functions/SDEs/RandCovMat.jl")
 
 #---------------------------------------------------------------------------
 # Supporting Functions

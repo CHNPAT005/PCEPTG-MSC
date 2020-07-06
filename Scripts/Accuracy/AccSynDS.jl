@@ -12,21 +12,21 @@ using ProgressMeter, JLD, Plots
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
-include("../../Functions/Correlation Estimators/Dirichlet/CFTcorrDK")
-include("../../Functions/Correlation Estimators/Dirichlet/FFTZPcorrDK")
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FINUFFT")
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-KB")
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-ES")
+include("../../Functions/Correlation Estimators/Dirichlet/CFTcorrDK.jl")
+include("../../Functions/Correlation Estimators/Dirichlet/FFTZPcorrDK.jl")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FINUFFT.jl")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG.jl")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-KB.jl")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-ES.jl")
 
-include("../../Functions/Correlation Estimators/Fejer/CFTcorrFK")
-include("../../Functions/Correlation Estimators/Fejer/FFTZPcorrFK")
-include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FINUFFT")
-include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG")
-include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-KB")
-include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-ES")
+include("../../Functions/Correlation Estimators/Fejer/CFTcorrFK.jl")
+include("../../Functions/Correlation Estimators/Fejer/FFTZPcorrFK.jl")
+include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FINUFFT.jl")
+include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG.jl")
+include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-KB.jl")
+include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-ES.jl")
 
-include("../../Functions/SDEs/GBM")
+include("../../Functions/SDEs/GBM.jl")
 
 #---------------------------------------------------------------------------
 ## Dirichlet

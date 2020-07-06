@@ -7,13 +7,13 @@ using ProgressMeter, JLD, LaTeXStrings, Plots
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
-include("../../Functions/Correlation Estimators/Fejer/CFTcorrFK")
-include("../../Functions/Correlation Estimators/Fejer/MScorrFK")
-include("../../Functions/Correlation Estimators/Fejer/FFTcorrFK")
-include("../../Functions/Correlation Estimators/Fejer/FFTZPcorrFK")
-include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG")
-include("../../Functions/SDEs/GBM")
-include("../../Functions/SDEs/RandCovMat")
+include("../../Functions/Correlation Estimators/Fejer/CFTcorrFK.jl")
+include("../../Functions/Correlation Estimators/Fejer/MScorrFK.jl")
+include("../../Functions/Correlation Estimators/Fejer/FFTcorrFK.jl")
+include("../../Functions/Correlation Estimators/Fejer/FFTZPcorrFK.jl")
+include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG.jl")
+include("../../Functions/SDEs/GBM.jl")
+include("../../Functions/SDEs/RandCovMat.jl")
 
 #---------------------------------------------------------------------------
 # Timing Functions
