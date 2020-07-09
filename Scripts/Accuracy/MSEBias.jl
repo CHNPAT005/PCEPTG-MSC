@@ -204,7 +204,7 @@ plot!(p1, N, mean(DirRes[3]["Bias11"], dims = 1)', ylims = (-1, 0.5), label = "K
 plot!(p1, N, mean(DirRes[4]["Bias11"], dims = 1)', ylims = (-1, 0.5), label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p1, N, mean(DirRes[5]["Bias11"], dims = 1)', ylims = (-1, 0.5), label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p1, L"\textrm{\# of Fourier coefficients }N")
-ylabel!(p1, L"\textrm{Bias } \hat{\Sigma}^{11}_{n,N}")
+ylabel!(p1, L"\textrm{Bias } \hat{\Sigma}^{11}_{n_1,N}")
 # title!(p1, L"\textrm{(a) Bias and \# of Fourier coefficients (Dirichlet)}")
 
 
@@ -217,7 +217,7 @@ plot!(p2, N, mean(DirRes[3]["Bias12"], dims = 1)', ylims = (-1, 0.5), label = "K
 plot!(p2, N, mean(DirRes[4]["Bias12"], dims = 1)', ylims = (-1, 0.5), label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p2, N, mean(DirRes[5]["Bias12"], dims = 1)', ylims = (-1, 0.5), label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p2, L"\textrm{\# of Fourier coefficients }N")
-ylabel!(p2, L"\textrm{Bias } \hat{\Sigma}^{12}_{n,N}")
+ylabel!(p2, L"\textrm{Bias } \hat{\Sigma}^{12}_{n_1,n_2,N}")
 # title!(p2, L"\textrm{(b) Bias and \# of Fourier coefficients (Dirichlet)}")
 
 
@@ -230,7 +230,7 @@ plot!(p3, N, mean(DirRes[3]["MSE11"], dims = 1)', ylims = (0, 0.5), label = "KB"
 plot!(p3, N, mean(DirRes[4]["MSE11"], dims = 1)', ylims = (0, 0.5), label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p3, N, mean(DirRes[5]["MSE11"], dims = 1)', ylims = (0, 0.5), label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p3, L"\textrm{\# of Fourier coefficients }N")
-ylabel!(p3, L"\textrm{MSE } \hat{\Sigma}^{11}_{n,N}")
+ylabel!(p3, L"\textrm{MSE } \hat{\Sigma}^{11}_{n_1,N}")
 # title!(p3, L"\textrm{(c) MSE and \# of Fourier coefficients (Dirichlet)}")
 
 
@@ -243,7 +243,7 @@ plot!(p4, N, mean(DirRes[3]["MSE12"], dims = 1)', ylims = (0, 0.5), label = "KB"
 plot!(p4, N, mean(DirRes[4]["MSE12"], dims = 1)', ylims = (0, 0.5), label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p4, N, mean(DirRes[5]["MSE12"], dims = 1)', ylims = (0, 0.5), label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p4, L"\textrm{\# of Fourier coefficients }N")
-ylabel!(p4, L"\textrm{MSE } \hat{\Sigma}^{12}_{n,N}")
+ylabel!(p4, L"\textrm{MSE } \hat{\Sigma}^{12}_{n_1,n_2,N}")
 # title!(p4, L"\textrm{(d) MSE and \# of Fourier coefficients (Dirichlet)}")
 
 
@@ -258,7 +258,7 @@ plot!(p1, N, mean(FejRes[3]["Bias11"], dims = 1)', ylims = (-1, 0.5), label = "K
 plot!(p1, N, mean(FejRes[4]["Bias11"], dims = 1)', ylims = (-1, 0.5), label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p1, N, mean(FejRes[5]["Bias11"], dims = 1)', ylims = (-1, 0.5), label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p1, L"\textrm{\# of Fourier coefficients }N")
-ylabel!(p1, L"\textrm{Bias } \hat{\Sigma}^{11}_{n,N}")
+ylabel!(p1, L"\textrm{Bias } \hat{\Sigma}^{11}_{n_1,N}")
 # title!(p1, L"\textrm{(a) Bias and \# of Fourier coefficients (Fej\'{e}r)}")
 
 
@@ -271,7 +271,7 @@ plot!(p2, N, mean(FejRes[3]["Bias12"], dims = 1)', ylims = (-1, 0.5), label = "K
 plot!(p2, N, mean(FejRes[4]["Bias12"], dims = 1)', ylims = (-1, 0.5), label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p2, N, mean(FejRes[5]["Bias12"], dims = 1)', ylims = (-1, 0.5), label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p2, L"\textrm{\# of Fourier coefficients }N")
-ylabel!(p2, L"\textrm{Bias } \hat{\Sigma}^{12}_{n,N}")
+ylabel!(p2, L"\textrm{Bias } \hat{\Sigma}^{12}_{n_1,n_2,N}")
 # title!(p2, L"\textrm{(b) Bias and \# of Fourier coefficients (Fej\'{e}r)}")
 
 
@@ -284,7 +284,7 @@ plot!(p3, N, mean(FejRes[3]["MSE11"], dims = 1)', ylims = (0, 0.5), label = "KB"
 plot!(p3, N, mean(FejRes[4]["MSE11"], dims = 1)', ylims = (0, 0.5), label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p3, N, mean(FejRes[5]["MSE11"], dims = 1)', ylims = (0, 0.5), label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p3, L"\textrm{\# of Fourier coefficients }N")
-ylabel!(p3, L"\textrm{MSE } \hat{\Sigma}^{11}_{n,N}")
+ylabel!(p3, L"\textrm{MSE } \hat{\Sigma}^{11}_{n_1,N}")
 # title!(p3, L"\textrm{(c) MSE and \# of Fourier coefficients (Fej\'{e}r)}")
 
 
@@ -297,7 +297,7 @@ plot!(p4, N, mean(FejRes[3]["MSE12"], dims = 1)', ylims = (0, 0.5), label = "KB"
 plot!(p4, N, mean(FejRes[4]["MSE12"], dims = 1)', ylims = (0, 0.5), label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p4, N, mean(FejRes[5]["MSE12"], dims = 1)', ylims = (0, 0.5), label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p4, L"\textrm{\# of Fourier coefficients }N")
-ylabel!(p4, L"\textrm{MSE } \hat{\Sigma}^{12}_{n,N}")
+ylabel!(p4, L"\textrm{MSE } \hat{\Sigma}^{12}_{n_1,n_2,N}")
 # title!(p4, L"\textrm{(d) MSE and \# of Fourier coefficients (Fej\'{e}r)}")
 
 

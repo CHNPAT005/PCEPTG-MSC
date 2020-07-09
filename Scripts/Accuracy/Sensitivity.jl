@@ -163,7 +163,7 @@ plot!(p1, σ, Dir11[3], label = "KB", color = :brown, line = (1, :solid), marker
 plot!(p1, σ, Dir11[4], label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p1, σ, Dir11[5], label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p1, L"\int_0^T \Sigma^{11}(t) dt")
-ylabel!(p1, L"\hat{\Sigma}^{11}_{n,N}")
+ylabel!(p1, L"\hat{\Sigma}^{11}_{n_1,N}")
 # title!(p1, L"\textrm{(a) Estimated and simulated (Dirichlet)}")
 
 savefig(p1, "Plots/MM-NUFFT/SensitivityDir11.svg")
@@ -176,7 +176,7 @@ plot!(p2, σ_12, Dir12[3], label = "KB", color = :brown, line = (1, :solid), mar
 plot!(p2, σ_12, Dir12[4], label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p2, σ_12, Dir12[5], label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p2, L"\int_0^T \Sigma^{12}(t) dt")
-ylabel!(p2, L"\hat{\Sigma}^{12}_{n,N}")
+ylabel!(p2, L"\hat{\Sigma}^{12}_{n_1,n_2,N}")
 # title!(p2, L"\textrm{(b) Estimated and simulated (Dirichlet)}")
 
 savefig(p2, "Plots/MM-NUFFT/SensitivityDir12.svg")
@@ -191,7 +191,7 @@ plot!(p3, σ, Fej11[3], label = "KB", color = :brown, line = (1, :solid), marker
 plot!(p3, σ, Fej11[4], label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p3, σ, Fej11[5], label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p3, L"\int_0^T \Sigma^{11}(t) dt")
-ylabel!(p3, L"\hat{\Sigma}^{11}_{n,N}")
+ylabel!(p3, L"\hat{\Sigma}^{11}_{n_1,N}")
 # title!(p3, L"\textrm{(c) Estimated and simulated (Fej\'{e}r)}")
 
 savefig(p3, "Plots/MM-NUFFT/SensitivityFej11.svg")
@@ -204,7 +204,7 @@ plot!(p4, σ_12, Fej12[3], label = "KB", color = :brown, line = (1, :solid), mar
 plot!(p4, σ_12, Fej12[4], label = "ES", color = :red, line = (1, :solid), marker=([:rect :d],3,1,stroke(2,:red)))
 plot!(p4, σ_12, Fej12[5], label = "FINUFFT", color = :green, line = (1, :solid), marker=([:cross :d],3,1,stroke(3,:green)))
 xlabel!(p4, L"\int_0^T \Sigma^{12}(t) dt")
-ylabel!(p4, L"\hat{\Sigma}^{12}_{n,N}")
+ylabel!(p4, L"\hat{\Sigma}^{12}_{n_1,n_2,N}")
 # title!(p4, L"\textrm{(d) Estimated and simulated (Fej\'{e}r)}")
 
 savefig(p4, "Plots/MM-NUFFT/SensitivityFej12.svg")

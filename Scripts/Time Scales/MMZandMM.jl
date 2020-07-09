@@ -8,11 +8,11 @@ using JLD, LaTeXStrings, Plots, Statistics, Distributions
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG.jl")
 
-include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG")
+include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG.jl")
 
-include("../../Functions/SDEs/GBM")
+include("../../Functions/SDEs/GBM.jl")
 
 #---------------------------------------------------------------------------
 

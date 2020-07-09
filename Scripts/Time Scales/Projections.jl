@@ -9,12 +9,12 @@ using Statistics; using Distributions; using ProgressMeter; using JLD
 
 cd("/Users/patrickchang1/PCEPTG-MM-NUFFT")
 
-include("../Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
+include("../Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG.jl")
 
-include("../Correlation Estimators/Fejer/NUFFTcorrFK-FGG")
+include("../Correlation Estimators/Fejer/NUFFTcorrFK-FGG.jl")
 
-include("../Monte Carlo Simulation Algorithms/GBM")
-include("../Misc/RandCovMat")
+include("../SDEs/GBM.jl")
+include("../Misc/RandCovMat.jl")
 
 #---------------------------------------------------------------------------
 # Supporting functions

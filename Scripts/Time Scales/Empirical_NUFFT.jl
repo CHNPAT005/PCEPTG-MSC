@@ -12,9 +12,9 @@ using Optim; using Distributions
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG.jl")
 
-include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG")
+include("../../Functions/Correlation Estimators/Fejer/NUFFTcorrFK-FGG.jl")
 
 ## Read in the data
 p = CSV.read("Real Data/JSE_prices_2019-06-24_2019-06-28.csv")
