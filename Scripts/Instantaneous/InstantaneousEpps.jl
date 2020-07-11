@@ -16,10 +16,10 @@ using LinearAlgebra, Plots, LaTeXStrings, StatsBase, Intervals, JLD, ProgressMet
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
-include("../../Functions/Instantaneous Estimators/MM-Inst")
-include("../../Functions/Instantaneous Estimators/MM-JR")
+include("../../Functions/Instantaneous Estimators/MM-Inst.jl")
+include("../../Functions/Instantaneous Estimators/MM-JR.jl")
 
-include("../../Functions/SDEs/Heston")
+include("../../Functions/SDEs/Heston.jl")
 
 #---------------------------------------------------------------------------
 ## Supporting functions

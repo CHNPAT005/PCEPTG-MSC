@@ -12,9 +12,9 @@ using Optim; using Distributions; using ProgressMeter
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
-include("../../Functions/Instantaneous Estimators/MM-Inst")
-include("../../Functions/Instantaneous Estimators/MM-JR")
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
+include("../../Functions/Instantaneous Estimators/MM-Inst.jl")
+include("../../Functions/Instantaneous Estimators/MM-JR.jl")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG.jl")
 
 #---------------------------------------------------------------------------
 # Read in the data
