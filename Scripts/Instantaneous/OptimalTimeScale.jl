@@ -133,7 +133,7 @@ tt = collect(0:1/outlength:1-(1/outlength))
 
 MM_syn = @animate for i in 1:length(M_syn)
     now = M_syn[i]
-    p1 = plot(t, deterministicCor.(t), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(1, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", dpi = 300)
+    p1 = plot(t, deterministicCor.(t), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(1, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", ylim=(-1,1))
     plot!(p1,tt, MM_corr_syn[i,:], label = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", color = :blue, line=(1, [:solid]))
     xlabel!(L"\textrm{Time}")
     ylabel!(L"\textrm{Instantaneous correlation } \rho^{12}(t)")
@@ -225,7 +225,7 @@ tt = collect(0:1/outlength:1-(1/outlength))
 
 MM_asyn_lam10 = @animate for i in 1:length(M_lam10)
     now = M_lam10[i]
-    p1 = plot(t, deterministicCor.(t), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(1, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", dpi = 300)
+    p1 = plot(t, deterministicCor.(t), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(1, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", ylim=(-1,1))
     plot!(p1,tt, MM_corr_lam10[i,:], label = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", color = :blue, line=(1, [:solid]))
     xlabel!(L"\textrm{Time}")
     ylabel!(L"\textrm{Instantaneous correlation } \rho^{12}(t)")
@@ -318,7 +318,7 @@ tt = collect(0:1/outlength:1-(1/outlength))
 
 MM_asyn_lam20 = @animate for i in 1:length(M_lam20)
     now = M_lam20[i]
-    p1 = plot(t, deterministicCor.(t), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(1, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", dpi = 300)
+    p1 = plot(t, deterministicCor.(t), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(1, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", ylim=(-1,1))
     plot!(p1,tt, MM_corr_lam20[i,:], label = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", color = :blue, line=(1, [:solid]))
     xlabel!(L"\textrm{Time}")
     ylabel!(L"\textrm{Instantaneous correlation } \rho^{12}(t)")
@@ -412,7 +412,7 @@ tt = collect(0:1/outlength:1-(1/outlength))
 
 MM_asyn_lam50 = @animate for i in 1:length(M_lam50)
     now = M_lam50[i]
-    p1 = plot(t, deterministicCor.(t), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(1, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", dpi = 300)
+    p1 = plot(t, deterministicCor.(t), label = L"\textrm{True } {\rho}^{12}(t)", color = :lightblue, line=(1, [:solid]), xlabel = L"\textrm{Time}", ylabel = L"\textrm{Instantaneous correlation } \rho^{12}(t)", ylim=(-1,1))
     plot!(p1,tt, MM_corr_lam50[i,:], label = L"\textrm{Estimated MM } \hat{\rho}^{12}_{\Delta t}(t)", color = :blue, line=(1, [:solid]))
     xlabel!(L"\textrm{Time}")
     ylabel!(L"\textrm{Instantaneous correlation } \rho^{12}(t)")
