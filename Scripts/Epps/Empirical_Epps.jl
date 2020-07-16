@@ -7,10 +7,10 @@ using LinearAlgebra, Plots, LaTeXStrings, StatsBase, Intervals, JLD, ProgressMet
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
-include("../../Functions/Hawkes/Hawkes")
-include("../../Functions/SDEs/GBM")
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
-include("../../Functions/Correlation Estimators/HY/HYcorr")
+include("../../Functions/Hawkes/Hawkes.jl")
+include("../../Functions/SDEs/GBM.jl")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG.jl")
+include("../../Functions/Correlation Estimators/HY/HYcorr.jl")
 
 #---------------------------------------------------------------------------
 ## RV correction

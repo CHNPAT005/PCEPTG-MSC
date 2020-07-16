@@ -6,11 +6,11 @@ using LinearAlgebra, Plots, LaTeXStrings, StatsBase, Intervals, JLD, ProgressMet
 
 cd("/Users/patrickchang1/PCEPTG-MSC")
 
-include("../../Functions/Hawkes/Hawkes")
-include("../../Functions/SDEs/GBM")
-include("../../Functions/SDEs/Merton Model")
-include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG")
-include("../../Functions/Correlation Estimators/HY/HYcorr")
+include("../../Functions/Hawkes/Hawkes.jl")
+include("../../Functions/SDEs/GBM.jl")
+include("../../Functions/SDEs/Merton Model.jl")
+include("../../Functions/Correlation Estimators/Dirichlet/NUFFTcorrDK-FGG.jl")
+include("../../Functions/Correlation Estimators/HY/HYcorr.jl")
 
 #---------------------------------------------------------------------------
 ## Theoretical correlations from a Hawkes price model used in Barcy et al.
@@ -111,7 +111,7 @@ for j in 1:n+1
 end
 
 p1 = plot(t, X, color = :blue, line=(1, [:dot]), legend = :topright, label = L"\textrm{Synchronous}", dpi = 300)
-plot!(p1, t, p_asyn, linetype = :steppost, color = :red, line=(1, [:solid]), label = L"\textrm{Asynchronous}")
+plot!(p1, t, p_asyn, linetype = :steppost, color = :red, line=(1, [:solid]), label = L"\textrm{Synchronised}")
 xlabel!(p1, L"\textrm{time [sec]}")
 ylabel!(p1, L"X_{t}")
 
@@ -203,7 +203,7 @@ plot!(p2, dt, theoretical_exp, color = :black, line=(2, [:solid]), label = L"\te
 hline!(p2, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Induced } \rho")
 hline!(p2, [mean(HYGBM_exp)], ribbon=err_HYGBM_exp, fillalpha=.15, color = :brown, line=(1, [:dash]), label = L"\textrm{HY}")
 xlabel!(p2, L"\Delta t\textrm{[sec]}")
-ylabel!(p2, L"\rho(\Delta t)")
+ylabel!(p2, L"\rho_{\Delta t}^{ij}")
 
 # savefig(p2, "Plots/EppsCorrection2/GBMPriceModelwExpSamples.svg")
 
@@ -273,7 +273,7 @@ plot!(p3, dt, mean(measured_GBM_flattime_adj_hawkes, dims=2), ribbon=err_measure
 hline!(p3, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Induced } \rho")
 hline!(p3, [mean(HYGBM_hawkes)], ribbon=err_HYGBM_hawkes, fillalpha=.15, color = :brown, line=(1, [:dash]), label = L"\textrm{HY}")
 xlabel!(p3, L"\Delta t\textrm{[sec]}")
-ylabel!(p3, L"\rho(\Delta t)")
+ylabel!(p3, L"\rho_{\Delta t}^{ij}")
 
 # savefig(p3, "Plots/EppsCorrection2/GBMPriceModelwHawkesSamples.svg")
 
@@ -353,7 +353,7 @@ p6 = plot(dt, mean(measured1_pear, dims=2), ribbon=err_measured1_pear, fillalpha
 plot!(p6, dt, theoretical, color = :black, line=(2, [:solid]), label = L"\textrm{Theoretical Synchronous Epps}")
 hline!(p6, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Limiting } \rho")
 xlabel!(p6, L"\Delta t\textrm{[sec]}")
-ylabel!(p6, L"\rho(\Delta t)")
+ylabel!(p6, L"\rho_{\Delta t}^{ij}")
 
 # savefig(p6, "Plots/EppsCorrection2/HawkesSynEpps.svg")
 
@@ -426,7 +426,7 @@ plot!(p7, dt, theoretical, color = :black, line=(2, [:solid]), label = L"\textrm
 hline!(p7, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Limiting } \rho")
 hline!(p7, [mean(HYHawkes_exp)], ribbon=err_HYHawkes_exp, fillalpha=.15, color = :brown, line=(1, [:dash]), label = L"\textrm{HY}")
 xlabel!(p7, L"\Delta t\textrm{[sec]}")
-ylabel!(p7, L"\rho(\Delta t)")
+ylabel!(p7, L"\rho_{\Delta t}^{ij}")
 
 # savefig(p7, "Plots/EppsCorrection2/HawkesPriceModelwExpSamples.svg")
 
@@ -495,7 +495,7 @@ plot!(p8, dt, theoretical, color = :black, line=(2, [:solid]), label = L"\textrm
 hline!(p8, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Limiting } \rho")
 hline!(p8, [mean(HYHawkes_hawkes)], ribbon=err_HYHawkes_hawkes, fillalpha=.15, color = :brown, line=(1, [:dash]), label = L"\textrm{HY}")
 xlabel!(p8, L"\Delta t\textrm{[sec]}")
-ylabel!(p8, L"\rho(\Delta t)")
+ylabel!(p8, L"\rho_{\Delta t}^{ij}")
 
 # savefig(p8, "Plots/EppsCorrection2/HawkesPriceModelwHawkesSamples.svg")
 
@@ -652,7 +652,7 @@ plot!(p10, dt, mean(measured_hawkes_flattime_adj_exp_lam25, dims=2), ribbon=err_
 plot!(p10, dt, theoretical_lam, color = :black, line=(2, [:solid]), label = L"\textrm{Theoretical Synchronous Epps}")
 hline!(p10, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Limiting } \rho")
 xlabel!(p10, L"\Delta t\textrm{[sec]}")
-ylabel!(p10, L"\rho(\Delta t)")
+ylabel!(p10, L"\rho_{\Delta t}^{ij}")
 
 # savefig(p10, "Plots/EppsCorrection2/HawkesPriceModelwDiffSamplingFreq.svg")
 
@@ -675,7 +675,7 @@ a = [0;0]
 b = [100/86400; 100/86400]
 λ = [0.2;0.2]
 
-P_Mert = Merton(T+1, mu, sigma, lambda, a, b)
+P_Mert = Merton(T+1, mu, sigma, λ, a, b)
 t_Mert = reshape([collect(0:1:T); collect(0:1:T)], T+1, 2)
 
 lam = 15
@@ -750,7 +750,7 @@ plot!(p11, dt, theoretical_exp, color = :black, line=(2, [:solid]), label = L"\t
 hline!(p11, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Induced } \rho")
 hline!(p11, [mean(HYMert_exp)], ribbon=err_HYMert_exp, fillalpha=.15, color = :brown, line=(1, [:dash]), label = L"\textrm{HY}")
 xlabel!(p11, L"\Delta t\textrm{[sec]}")
-ylabel!(p11, L"\rho(\Delta t)")
+ylabel!(p11, L"\rho_{\Delta t}^{ij}")
 
 # savefig(p11, "Plots/EppsCorrection2/MertPriceModelwExpSamples.svg")
 
@@ -820,6 +820,6 @@ plot!(p12, dt, mean(measured_Mert_flattime_adj_hawkes, dims=2), ribbon=err_measu
 hline!(p12, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Induced } \rho")
 hline!(p12, [mean(HYMert_hawkes)], ribbon=err_HYMert_hawkes, fillalpha=.15, color = :brown, line=(1, [:dash]), label = L"\textrm{HY}")
 xlabel!(p12, L"\Delta t\textrm{[sec]}")
-ylabel!(p12, L"\rho(\Delta t)")
+ylabel!(p12, L"\rho_{\Delta t}^{ij}")
 
 # savefig(p12, "Plots/EppsCorrection2/MertPriceModelwHawkesSamples.svg")
