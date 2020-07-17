@@ -506,6 +506,7 @@ ylabel!(p8, L"\rho_{\Delta t}^{ij}")
 
 lamrange = collect(1:45)
 HYlam = zeros(length(lamrange), reps)
+HYlam_GBM = zeros(length(lamrange), reps)
 
 # Takes roughly 2.5 hours to compute
 @showprogress "Computing..." for k in 1:reps
@@ -524,25 +525,39 @@ HYlam = zeros(length(lamrange), reps)
         P1 = exp.(P_1[Int.(floor.(t1).+1), 1])
         P2 = exp.(P_1[Int.(floor.(t2).+1), 2])
         HYlam[i,k] = HYcorr(P1,P2,t1,t2)[1][1,2]
+
+        P1_GBM = P_GBM[Int.(floor.(t1).+1), 1]
+        P2_GBM = P_GBM[Int.(floor.(t2).+1), 2]
+        HYlam_GBM[i,k] = HYcorr(P1_GBM,P2_GBM,t1,t2)[1][1,2]
     end
 end
 
 # Save and Load
-save("Computed Data/EppsCorrection/HYFreq2.jld", "HYlam", HYlam)
+save("Computed Data/EppsCorrection/HYFreq2.jld", "HYlam", HYlam, "HYlam_GBM", HYlam_GBM)
 
-HYlam = load("Computed Data/EppsCorrection/HYFreq2.jld")
-HYlam = HYlam["HYlam"]
+HYRes = load("Computed Data/EppsCorrection/HYFreq2.jld")
+HYlam = HYRes["HYlam"]
+HYlam_GBM = HYRes["HYlam_GBM"]
 
 q = quantile.(TDist(reps-1), [0.975])
 
 err_HYlam = (q .* std(HYlam, dims = 2))
 
-p9 = plot(lamrange, mean(HYlam, dims=2), ribbon=err_HYlam, fillalpha=.15, color = :brown, line=(1, [:dash]), legend = :bottomright, label = L"\textrm{HY}", dpi = 300)
+p9 = plot(lamrange, mean(HYlam, dims=2), ribbon=err_HYlam, fillalpha=.15, color = :brown, line=(1, [:dash]), legend = :bottomright, label = L"\textrm{HY}", dpi = 300, ylims = (0.1, 0.8))
 hline!(p9, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Limiting } \rho")
 xlabel!(p9, L"\textrm{Average inter-arrival}(1/\lambda)\textrm{[sec]}")
 ylabel!(p9, L"\rho(1/\lambda)")
 
 # savefig(p9, "Plots/EppsCorrection2/HawkesPriceModelHYSamplingFreq.svg")
+
+err_HYlam_GBM = (q .* std(HYlam_GBM, dims = 2))
+
+p9_2 = plot(lamrange, mean(HYlam_GBM, dims=2), ribbon=err_HYlam_GBM, fillalpha=.15, color = :brown, line=(1, [:dash]), legend = :bottomright, label = L"\textrm{HY}", dpi = 300, ylims = (0.1, 0.8))
+hline!(p9_2, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Induced } \rho")
+xlabel!(p9_2, L"\textrm{Average inter-arrival}(1/\lambda)\textrm{[sec]}")
+ylabel!(p9_2, L"\rho(1/\lambda)")
+
+# savefig(p9_2, "Plots/EppsCorrection2/GBMPriceModelHYSamplingFreq.svg")
 
 #---------------------------------------------------------------------------
 ## How the sampling freqency affects the overlap correction, when sampling freqency
@@ -823,3 +838,71 @@ xlabel!(p12, L"\Delta t\textrm{[sec]}")
 ylabel!(p12, L"\rho_{\Delta t}^{ij}")
 
 # savefig(p12, "Plots/EppsCorrection2/MertPriceModelwHawkesSamples.svg")
+
+#---------------------------------------------------------------------------
+## K-Skip sampling
+#---------------------------------------------------------------------------
+# The next experiment tries to determine the underlying process using
+# one set of inter-arrivals U^i and U^j by using k-skip sampling to emualate
+# the sampling process with different inter-arrivals
+
+## Hawkes price model
+reps = 1    # only use 1 replication to see if it works
+kskip = collect(1:1:50)
+HYlam_lam1 = zeros(length(kskip), reps)
+HYlam_lam1_GBM = zeros(length(kskip), reps)
+
+# Takes roughly 2 minute to compute
+for k in 1:reps
+    lam1 = 1
+    Random.seed!(k)
+    t1_lam1 = [0; rexp(T, lam1)]
+    t1_lam1 = cumsum(t1_lam1)
+    t1_lam1 = filter((x) -> x < T, t1_lam1)
+    Random.seed!(k+reps)
+    t2_lam1 = [0; rexp(T, lam1)]
+    t2_lam1 = cumsum(t2_lam1)
+    t2_lam1 = filter((x) -> x < T, t2_lam1)
+
+    @showprogress "Computing..." for i in 1:length(kskip)
+        t1_lam1_ind = collect(1:kskip[i]:length(t1_lam1))
+        t2_lam1_ind = collect(1:kskip[i]:length(t2_lam1))
+
+        t1_lam1_temp = t1_lam1[t1_lam1_ind]
+        t2_lam1_temp = t2_lam1[t2_lam1_ind]
+        # Hawkes
+        P1_lam1 = exp.(P_1[Int.(floor.(t1_lam1_temp).+1), 1])
+        P2_lam1 = exp.(P_1[Int.(floor.(t2_lam1_temp).+1), 2])
+        # GBM
+        P1_lam1_GBM = (P_GBM[Int.(floor.(t1_lam1_temp).+1), 1])
+        P2_lam1_GBM = (P_GBM[Int.(floor.(t2_lam1_temp).+1), 2])
+
+
+        HYlam_lam1[i,k] = HYcorr(P1_lam1,P2_lam1,t1_lam1_temp,t2_lam1_temp)[1][1,2]
+        HYlam_lam1_GBM[i,k] = HYcorr(P1_lam1_GBM,P2_lam1_GBM,t1_lam1_temp,t2_lam1_temp)[1][1,2]
+    end
+end
+
+# Save and Load
+save("Computed Data/EppsCorrection/k_skipHY.jld", "HYlam_lam1", HYlam_lam1, "HYlam_lam1_GBM", HYlam_lam1_GBM)
+
+k_skipHY = load("Computed Data/EppsCorrection/k_skipHY.jld")
+HYlam_lam1 = k_skipHY["HYlam_lam1"]
+HYlam_lam1_GBM = k_skipHY["HYlam_lam1_GBM"]
+
+
+# Plot
+
+p13 = plot(kskip, HYlam_lam1, color = :brown, line=(1, [:dash]), legend = :bottomright, label = L"\textrm{HY}", dpi = 300, ylims = (0.1, 0.8))
+hline!(p13, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Limiting } \rho")
+xlabel!(p13, L"\textrm{k-skip}")
+ylabel!(p13, L"\rho(\textrm{k})")
+
+# savefig(p13, "Plots/EppsCorrection2/k_skipHY_Hawkes.svg")
+
+p14 = plot(kskip, HYlam_lam1_GBM, color = :brown, line=(1, [:dash]), legend = :bottomright, label = L"\textrm{HY}", dpi = 300, ylims = (0.1, 0.8))
+hline!(p14, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Induced } \rho")
+xlabel!(p14, L"\textrm{k-skip}")
+ylabel!(p14, L"\rho(\textrm{k})")
+
+# savefig(p14, "Plots/EppsCorrection2/k_skipHY_GBM.svg")
