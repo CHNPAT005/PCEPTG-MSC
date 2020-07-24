@@ -115,7 +115,7 @@ plot!(p1, dt, mean(res[3], dims = 1)', ribbon=std(res[3], dims = 1)' * quantile.
         fillalpha=.1, label = L"\rho = 0.7", marker=([:circ :d],3,1,stroke(2,:red)), color = :red)
 plot!(p1, dt, mean(res[5], dims = 1)', ribbon=std(res[5], dims = 1)' * quantile.(TDist(reps-1), [0.84]),
         fillalpha=.1, label = L"\rho = 0.01", marker=([:+ :d],3,1,stroke(2,:green)), color = :green)
-ylabel!(p1, L"\rho(\Delta t)")
+ylabel!(p1, L"\rho_{\Delta t}^{ij}")
 xlabel!(p1, L"\Delta t \textrm{ [sec]}")
 
 savefig(p1, "Plots/MM-NUFFT/3Asset1DK.svg")
@@ -146,7 +146,7 @@ plot!(p1, dt, mean(res[3], dims = 1)', ribbon=std(res[3], dims = 1)' * quantile.
         fillalpha=.1, label = L"\rho = 0.7", marker=([:circ :d],3,1,stroke(2,:red)), color = :red)
 plot!(p1, dt, mean(res[5], dims = 1)', ribbon=std(res[5], dims = 1)' * quantile.(TDist(reps-1), [0.84]),
         fillalpha=.1, label = L"\rho = 0.01", marker=([:+ :d],3,1,stroke(2,:green)), color = :green)
-ylabel!(p1, L"\rho(\Delta t)")
+ylabel!(p1, L"\rho_{\Delta t}^{ij}")
 xlabel!(p1, L"\Delta t \textrm{ [sec]}")
 
 savefig(p1, "Plots/MM-NUFFT/3Asset2DK.svg")
