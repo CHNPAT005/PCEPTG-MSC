@@ -29,7 +29,7 @@ t = convert(Matrix, t[:,2:11])
 ## Run and time results
 dt = collect(1:1:100)
 
-T = 60*60*8 * 5
+T = (3600*7+50*60) * 5
 
 N = Int.(floor.(((T ./dt).-1.0) ./ 2))
 
@@ -71,7 +71,7 @@ Fej = Fej["FKres"]
 # MMZ plots all asset pairs
 p1 = plot(x = dt, legend = :outertopleft, legendtitle="Asset Pair", legendfont = font("Times new roman", 7), size = (1000, 800),
             ylims = (-0.1, 0.65), dpi = 300)
-ylabel!(p1, L"\rho(\Delta t)")
+ylabel!(p1, L"\rho_{\Delta t}^{ij}")
 xlabel!(p1, L"\Delta t \textrm{ [sec]}")
 for i in 1:9
     for j in i+1:10
@@ -90,8 +90,8 @@ savefig(p1, "Plots/MM-NUFFT/EmpDKMMZALL.svg")
 
 p2 = plot(x = dt, legend = :outertopleft, legendtitle="Asset Pair", legendfont = font("Times new roman", 7), size = (1000, 800),
             ylims = (-0.1, 0.65), dpi = 300)
-ylabel!(p1, L"\rho(\Delta t)")
-xlabel!(p1, L"\Delta t \textrm{ [sec]}")
+ylabel!(p2, L"\rho_{\Delta t}^{ij}")
+xlabel!(p2, L"\Delta t \textrm{ [sec]}")
 for i in 1:9
     for j in i+1:10
         Fejres = zeros(length(dt), 1)
@@ -109,29 +109,29 @@ savefig(p2, "Plots/MM-NUFFT/EmpFKMMZALL.svg")
 ## Heatmaps for various Δt's
 
 # Dirichlet
-p1 = plot(Dir[:,:,1], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho", xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
+p1 = plot(Dir[:,:,1], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho_{\Delta t}^{ij}", xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
 savefig(p1, "Plots/MM-NUFFT/EmpDKHM1.png")
 
-p2 = plot(Dir[:,:,30], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
+p2 = plot(Dir[:,:,30], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho_{\Delta t}^{ij}",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
 savefig(p2, "Plots/MM-NUFFT/EmpDKHM30.png")
 
-p3 = plot(Dir[:,:,60], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
+p3 = plot(Dir[:,:,60], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho_{\Delta t}^{ij}",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
 savefig(p3, "Plots/MM-NUFFT/EmpDKHM60.png")
 
-p4 = plot(Dir[:,:,100], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
+p4 = plot(Dir[:,:,100], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho_{\Delta t}^{ij}",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
 savefig(p4, "Plots/MM-NUFFT/EmpDKHM100.png")
 
 # Fejer
-p1 = plot(Fej[:,:,1], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho", xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
+p1 = plot(Fej[:,:,1], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho_{\Delta t}^{ij}", xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
 savefig(p1, "Plots/MM-NUFFT/EmpFKHM1.png")
 
-p2 = plot(Fej[:,:,30], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
+p2 = plot(Fej[:,:,30], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho_{\Delta t}^{ij}",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
 savefig(p2, "Plots/MM-NUFFT/EmpFKHM30.png")
 
-p3 = plot(Fej[:,:,60], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
+p3 = plot(Fej[:,:,60], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho_{\Delta t}^{ij}",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
 savefig(p3, "Plots/MM-NUFFT/EmpFKHM60.png")
 
-p4 = plot(Fej[:,:,100], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
+p4 = plot(Fej[:,:,100], st=:heatmap, clim=(-1,1), color=cgrad([:red, :white, :blue]), colorbar_title=L"\rho_{\Delta t}^{ij}",xticks = (1:10, tickers), yticks = (1:10, tickers), dpi = 300, size = (800, 700), tickfontsize = 15)
 savefig(p4, "Plots/MM-NUFFT/EmpFKHM100.png")
 
 #---------------------------------------------------------------------------
@@ -214,7 +214,7 @@ FKFSRAGL_error = FKFSRAGL_error["FKFSRAGL_error"]
 q = quantile.(TDist(100-1), [0.975])
 
 p1 = plot(x = dt, legend = :right, legendtitle="Asset Pair", legendfont = font("Times new roman", 7), dpi = 300, ylims = (-0.1, 0.7))
-ylabel!(p1, L"\rho(\Delta t)")
+ylabel!(p1, L"\rho_{\Delta t}^{ij}")
 xlabel!(p1, L"\Delta t \textrm{ [sec]}")
 DKFSRSBK = zeros(length(dt), 1)
 DKFSRAGL = zeros(length(dt), 1)
@@ -237,7 +237,7 @@ savefig(p1, "Plots/MM-NUFFT/EmpDKMMZ2.svg")
 
 
 p2 = plot(x = dt, legend = :right, legendtitle="Asset Pair", legendfont = font("Times new roman", 7), dpi = 300, ylims = (-0.1, 0.7))
-ylabel!(p2, L"\rho(\Delta t)")
+ylabel!(p2, L"\rho_{\Delta t}^{ij}")
 xlabel!(p2, L"\Delta t \textrm{ [sec]}")
 FKFSRSBK = zeros(length(dt), 1)
 FKFSRAGL = zeros(length(dt), 1)
