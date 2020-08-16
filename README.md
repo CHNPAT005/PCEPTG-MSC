@@ -66,8 +66,8 @@ The implementation is performed using two representations: the Dirichlet and the
 
 and two optional input variables:
 
-- $N$: (optional input) for the number of Fourier coefficients used in the convolution of the Malliavin-Mancino estimator (integer) - defaults to the Nyquist frequency,
-- tol: tolerance requested - defaults to $10^{-12}$.
+- N: (optional input) for the number of Fourier coefficients used in the convolution of the Malliavin-Mancino estimator (integer) - defaults to the Nyquist frequency,
+- tol: tolerance requested - defaults to 10^-12.
 
 
 ##### Example
@@ -146,9 +146,9 @@ The function requires three input variables:
 
 and three optional input variables:
 
-- $N$: (optional input) for the number of Fourier coefficients of the price process used in the convolution of the Malliavin-Mancino estimator (integer), controls the level of averaging and directly affects the time-scale investigated - defaults to the Nyquist frequency,
-- $M$: (optional input) for the number of Fourier coefficients of the volatility process using in the reconstruction of the spot estimates - defaults to <img src="https://render.githubusercontent.com/render/math?math=M = \frac{1}{8} \frac{1}{2\pi} \sqrt{n} \log n">, and
-- tol: tolerance requested - defaults to $10^{-12}$.
+- N: (optional input) for the number of Fourier coefficients of the price process used in the convolution of the Malliavin-Mancino estimator (integer), controls the level of averaging and directly affects the time-scale investigated - defaults to the Nyquist frequency,
+- M: (optional input) for the number of Fourier coefficients of the volatility process using in the reconstruction of the spot estimates - defaults to <img src="https://render.githubusercontent.com/render/math?math=M = \frac{1}{8} \frac{1}{2\pi} \sqrt{n} \log n">, and
+- tol: tolerance requested - defaults to 10^-12.
 
 ##### Example
 
@@ -190,7 +190,7 @@ The Cuchiero-Teichmann instantaneous estimator uses the specification of g(x) = 
 The function requires three input variables:
 
 - p: (n x 2) double float matrix of price observations,
-- $N$: the cutting frequency (integer) used in the reconstruction of the spot estimates, the dissertation uses the notation $M$, and
+- N: the cutting frequency (integer) used in the reconstruction of the spot estimates, the dissertation uses the notation M, and
 - outlength: the number of synchronous grid points to reconstruct the spot estimates.
 
 ##### Example
@@ -227,9 +227,7 @@ vol12 = JR_Heston[3]    # Vector of spot co-volatility estimates
 
 ### Hawkes
 
-The functions include a variety of functions for the simulation and calibration of a M-variate Hawkes process. The Hawkes process uses an exponential kernel of the form:
-
-<img src="https://render.githubusercontent.com/render/math?math= \phi^{mn}(t) = \alpha^{mn} e^{-\beta^{mn} t} \mathbb{1}_{t \in \mathbb{R}^+}">
+The functions include a variety of functions for the simulation and calibration of a M-variate Hawkes process. The Hawkes process uses an exponential kernel of the form: <img src="https://render.githubusercontent.com/render/math?math= \phi^{mn}(t) = \alpha^{mn} e^{-\beta^{mn} t} \mathbb{1}_{t \in \mathbb{R}^+}">
 
 #### Simulation
 
