@@ -227,7 +227,7 @@ vol12 = JR_Heston[3]    # Vector of spot co-volatility estimates
 
 ### Hawkes
 
-The functions include a variety of functions for the simulation and calibration of a M-variate Hawkes process. The Hawkes process uses an exponential kernel of the form: <img src="https://render.githubusercontent.com/render/math?math= \phi^{mn}(t) = \alpha^{mn} e^{-\beta^{mn} t}  {1}_{t \in {R}^+}">
+The functions include a variety of functions for the simulation and calibration of a M-variate Hawkes process. The Hawkes process uses a single exponential kernel.
 
 #### Simulation
 
