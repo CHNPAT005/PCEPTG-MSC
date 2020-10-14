@@ -906,3 +906,196 @@ xlabel!(p14, L"\textrm{k-skip}")
 ylabel!(p14, L"\rho(\textrm{k})")
 
 # savefig(p14, "Plots/EppsCorrection2/k_skipHY_GBM.svg")
+
+
+#---------------------------------------------------------------------------
+## K-Skip sampling with link to Δt (Hawkes underlying)
+#---------------------------------------------------------------------------
+reps = 1
+kskip = [1; 10; 25]
+dt = collect(1:1:100)
+
+measured_hawkes_flattime_adj_kskip1 = zeros(length(dt), reps)
+measured_hawkes_flattime_adj_kskip10 = zeros(length(dt), reps)
+measured_hawkes_flattime_adj_kskip25 = zeros(length(dt), reps)
+
+# Takes roughly 10 hours to compute
+for k in 1:reps
+    lam1 = 1
+    Random.seed!(k)
+    t1_lam1 = [0; rexp(T, lam1)]
+    t1_lam1 = cumsum(t1_lam1)
+    t1_lam1 = filter((x) -> x < T, t1_lam1)
+    Random.seed!(k+reps)
+    t2_lam1 = [0; rexp(T, lam1)]
+    t2_lam1 = cumsum(t2_lam1)
+    t2_lam1 = filter((x) -> x < T, t2_lam1)
+
+    t1_kskip1 = t1_lam1[collect(1:kskip[1]:length(t1_lam1))]
+    t2_kskip1 = t2_lam1[collect(1:kskip[1]:length(t2_lam1))]
+
+    t1_kskip10 = t1_lam1[collect(1:kskip[2]:length(t1_lam1))]
+    t2_kskip10 = t2_lam1[collect(1:kskip[2]:length(t2_lam1))]
+
+    t1_kskip25 = t1_lam1[collect(1:kskip[3]:length(t1_lam1))]
+    t2_kskip25 = t2_lam1[collect(1:kskip[3]:length(t2_lam1))]
+
+    @showprogress "Computing..." for i in 1:length(dt)
+        t = collect(0:dt[i]:T)
+        n = length(t)
+        p1_kskip1 = zeros(n,1)
+        p2_kskip1 = zeros(n,1)
+        p1_kskip10 = zeros(n,1)
+        p2_kskip10 = zeros(n,1)
+        p1_kskip25 = zeros(n,1)
+        p2_kskip25 = zeros(n,1)
+        for j in 1:n
+            γ1_kskip1 = maximum(filter(x-> x .<= t[j], t1_kskip1))
+            γ2_kskip1 = maximum(filter(x-> x .<= t[j], t2_kskip1))
+            # γ1_kskip1 = t1_kskip1[findlast(x-> x .<= t[j], t1_kskip1)]
+            # γ2_kskip1 = t2_kskip1[findlast(x-> x .<= t[j], t2_kskip1)]
+            p1_kskip1[j] = exp(P_1[Int(floor(γ1_kskip1)+1), 1])
+            p2_kskip1[j] = exp(P_1[Int(floor(γ2_kskip1)+1), 2])
+
+            γ1_kskip10 = maximum(filter(x-> x .<= t[j], t1_kskip10))
+            γ2_kskip10 = maximum(filter(x-> x .<= t[j], t2_kskip10))
+            # γ1_kskip10 = t1_kskip10[findlast(x-> x .<= t[j], t1_kskip10)]
+            # γ2_kskip10 = t2_kskip10[findlast(x-> x .<= t[j], t2_kskip10)]
+            p1_kskip10[j] = exp(P_1[Int(floor(γ1_kskip10)+1), 1])
+            p2_kskip10[j] = exp(P_1[Int(floor(γ2_kskip10)+1), 2])
+
+            γ1_kskip25 = maximum(filter(x-> x .<= t[j], t1_kskip25))
+            γ2_kskip25 = maximum(filter(x-> x .<= t[j], t2_kskip25))
+            # γ1_kskip25 = t1_kskip25[findlast(x-> x .<= t[j], t1_kskip25)]
+            # γ2_kskip25 = t2_kskip25[findlast(x-> x .<= t[j], t2_kskip25)]
+            p1_kskip25[j] = exp(P_1[Int(floor(γ1_kskip25)+1), 1])
+            p2_kskip25[j] = exp(P_1[Int(floor(γ2_kskip25)+1), 2])
+        end
+        adj_kskip1 = flattime(dt[i], t1_kskip1[2:end], t2_kskip1[2:end], T)
+        adj_kskip10 = flattime(dt[i], t1_kskip10[2:end], t2_kskip10[2:end], T)
+        adj_kskip25 = flattime(dt[i], t1_kskip25[2:end], t2_kskip25[2:end], T)
+
+        measured_lam1 = NUFFTcorrDKFGG([p1_kskip1 p2_kskip1], [t t])[1][1,2]
+        measured_hawkes_flattime_adj_kskip1[i,k] = measured_lam1/adj_kskip1
+
+        measured_lam10 = NUFFTcorrDKFGG([p1_kskip10 p2_kskip10], [t t])[1][1,2]
+        measured_hawkes_flattime_adj_kskip10[i,k] = measured_lam10/adj_kskip10
+
+        measured_lam25 = NUFFTcorrDKFGG([p1_kskip25 p2_kskip25], [t t])[1][1,2]
+        measured_hawkes_flattime_adj_kskip25[i,k] = measured_lam25/adj_kskip25
+    end
+end
+
+theoretical_lam = zeros(length(dt), 1)
+for i in 1:length(dt)
+    theoretical_lam[i] = theoreticalEpps(dt[i], 0.015, 0.023, 0.05, 0.11)
+end
+
+# Save and Load
+save("Computed Data/EppsCorrection/k_skipHawkes.jld", "measured_hawkes_flattime_adj_kskip1", measured_hawkes_flattime_adj_kskip1, "measured_hawkes_flattime_adj_kskip10", measured_hawkes_flattime_adj_kskip10,
+"measured_hawkes_flattime_adj_kskip25", measured_hawkes_flattime_adj_kskip25, "theoretical_lam", theoretical_lam)
+
+k_skipHawkes = load("Computed Data/EppsCorrection/k_skipHawkes.jld")
+measured_hawkes_flattime_adj_kskip1 = k_skipHawkes["measured_hawkes_flattime_adj_kskip1"]
+measured_hawkes_flattime_adj_kskip10 = k_skipHawkes["measured_hawkes_flattime_adj_kskip10"]
+measured_hawkes_flattime_adj_kskip25 = k_skipHawkes["measured_hawkes_flattime_adj_kskip25"]
+theoretical_lam = k_skipHawkes["theoretical_lam"]
+
+
+p15 = plot(dt, mean(measured_hawkes_flattime_adj_kskip1, dims=2), legend = :bottomright, color = :red, line=(1, [:solid]), label = L"\textrm{k-skip} = 1", marker=([:+ :d],1,0,stroke(2,:red)), dpi = 300)
+plot!(p15, dt, mean(measured_hawkes_flattime_adj_kskip10, dims=2), color = :blue, line=(1, [:solid]), label = L"\textrm{k-skip} = 10", marker=([:x :d],1,0,stroke(2,:blue)))
+plot!(p15, dt, mean(measured_hawkes_flattime_adj_kskip25, dims=2), color = :green, line=(1, [:solid]), label = L"\textrm{k-skip} = 25", marker=([:circle :d],1,0,stroke(2,:green)))
+plot!(p15, dt, theoretical_lam, color = :black, line=(2, [:solid]), label = L"\textrm{Theoretical Synchronous Epps}")
+hline!(p15, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Limiting } \rho")
+xlabel!(p15, L"\Delta t\textrm{[sec]}")
+ylabel!(p15, L"\rho_{\Delta t}^{ij}")
+
+
+
+#---------------------------------------------------------------------------
+## K-Skip sampling with link to Δt (GBM underlying)
+#---------------------------------------------------------------------------
+reps = 1
+kskip = [1; 10; 25]
+dt = collect(1:1:100)
+
+measured_GBM_flattime_adj_kskip1 = zeros(length(dt), reps)
+measured_GBM_flattime_adj_kskip10 = zeros(length(dt), reps)
+measured_GBM_flattime_adj_kskip25 = zeros(length(dt), reps)
+
+# Takes roughly 10 hours to compute
+for k in 1:reps
+    lam1 = 1
+    Random.seed!(k)
+    t1_lam1 = [0; rexp(T, lam1)]
+    t1_lam1 = cumsum(t1_lam1)
+    t1_lam1 = filter((x) -> x < T, t1_lam1)
+    Random.seed!(k+reps)
+    t2_lam1 = [0; rexp(T, lam1)]
+    t2_lam1 = cumsum(t2_lam1)
+    t2_lam1 = filter((x) -> x < T, t2_lam1)
+
+    t1_kskip1 = t1_lam1[collect(1:kskip[1]:length(t1_lam1))]
+    t2_kskip1 = t2_lam1[collect(1:kskip[1]:length(t2_lam1))]
+
+    t1_kskip10 = t1_lam1[collect(1:kskip[2]:length(t1_lam1))]
+    t2_kskip10 = t2_lam1[collect(1:kskip[2]:length(t2_lam1))]
+
+    t1_kskip25 = t1_lam1[collect(1:kskip[3]:length(t1_lam1))]
+    t2_kskip25 = t2_lam1[collect(1:kskip[3]:length(t2_lam1))]
+
+    @showprogress "Computing..." for i in 1:length(dt)
+        t = collect(0:dt[i]:T)
+        n = length(t)
+        p1_kskip1 = zeros(n,1)
+        p2_kskip1 = zeros(n,1)
+        p1_kskip10 = zeros(n,1)
+        p2_kskip10 = zeros(n,1)
+        p1_kskip25 = zeros(n,1)
+        p2_kskip25 = zeros(n,1)
+        for j in 1:n
+            γ1_kskip1 = maximum(filter(x-> x .<= t[j], t1_kskip1))
+            γ2_kskip1 = maximum(filter(x-> x .<= t[j], t2_kskip1))
+            p1_kskip1[j] = P_GBM[Int(floor(γ1_kskip1)+1), 1]
+            p2_kskip1[j] = P_GBM[Int(floor(γ2_kskip1)+1), 2]
+
+            γ1_kskip10 = maximum(filter(x-> x .<= t[j], t1_kskip10))
+            γ2_kskip10 = maximum(filter(x-> x .<= t[j], t2_kskip10))
+            p1_kskip10[j] = P_GBM[Int(floor(γ1_kskip10)+1), 1]
+            p2_kskip10[j] = P_GBM[Int(floor(γ2_kskip10)+1), 2]
+
+            γ1_kskip25 = maximum(filter(x-> x .<= t[j], t1_kskip25))
+            γ2_kskip25 = maximum(filter(x-> x .<= t[j], t2_kskip25))
+            p1_kskip25[j] = P_GBM[Int(floor(γ1_kskip25)+1), 1]
+            p2_kskip25[j] = P_GBM[Int(floor(γ2_kskip25)+1), 2]
+        end
+        adj_kskip1 = flattime(dt[i], t1_kskip1[2:end], t2_kskip1[2:end], T)
+        adj_kskip10 = flattime(dt[i], t1_kskip10[2:end], t2_kskip10[2:end], T)
+        adj_kskip25 = flattime(dt[i], t1_kskip25[2:end], t2_kskip25[2:end], T)
+
+        measured_lam1 = NUFFTcorrDKFGG([p1_kskip1 p2_kskip1], [t t])[1][1,2]
+        measured_GBM_flattime_adj_kskip1[i,k] = measured_lam1/adj_kskip1
+
+        measured_lam10 = NUFFTcorrDKFGG([p1_kskip10 p2_kskip10], [t t])[1][1,2]
+        measured_GBM_flattime_adj_kskip10[i,k] = measured_lam10/adj_kskip10
+
+        measured_lam25 = NUFFTcorrDKFGG([p1_kskip25 p2_kskip25], [t t])[1][1,2]
+        measured_GBM_flattime_adj_kskip25[i,k] = measured_lam25/adj_kskip25
+    end
+end
+
+# Save and Load
+save("Computed Data/EppsCorrection/k_skipGBM.jld", "measured_GBM_flattime_adj_kskip1", measured_GBM_flattime_adj_kskip1, "measured_GBM_flattime_adj_kskip10", measured_GBM_flattime_adj_kskip10,
+"measured_GBM_flattime_adj_kskip25", measured_GBM_flattime_adj_kskip25)
+
+k_skipGBM = load("Computed Data/EppsCorrection/k_skipGBM.jld")
+measured_GBM_flattime_adj_kskip1 = k_skipGBM["measured_GBM_flattime_adj_kskip1"]
+measured_GBM_flattime_adj_kskip10 = k_skipGBM["measured_GBM_flattime_adj_kskip10"]
+measured_GBM_flattime_adj_kskip25 = k_skipGBM["measured_GBM_flattime_adj_kskip25"]
+
+p16 = plot(dt, mean(measured_GBM_flattime_adj_kskip1, dims=2), legend = :bottomright, color = :red, line=(1, [:solid]), label = L"\textrm{k-skip} = 1", marker=([:+ :d],1,0,stroke(2,:red)), dpi = 300)
+plot!(p16, dt, mean(measured_GBM_flattime_adj_kskip10, dims=2), color = :blue, line=(1, [:solid]), label = L"\textrm{k-skip} = 10", marker=([:x :d],1,0,stroke(2,:blue)))
+plot!(p16, dt, mean(measured_GBM_flattime_adj_kskip25, dims=2), color = :green, line=(1, [:solid]), label = L"\textrm{k-skip} = 25", marker=([:circle :d],1,0,stroke(2,:green)))
+hline!(p16, [ρ], color = :black, line=(2, [:dot]), label = L"\textrm{Induced } \rho")
+xlabel!(p16, L"\Delta t\textrm{[sec]}")
+ylabel!(p16, L"\rho_{\Delta t}^{ij}")
