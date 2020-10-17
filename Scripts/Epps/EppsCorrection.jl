@@ -1023,7 +1023,7 @@ measured_GBM_flattime_adj_kskip1 = zeros(length(dt), reps)
 measured_GBM_flattime_adj_kskip10 = zeros(length(dt), reps)
 measured_GBM_flattime_adj_kskip25 = zeros(length(dt), reps)
 
-# Takes roughly 10 hours to compute
+# Takes roughly 6 hours to compute
 for k in 1:reps
     lam1 = 1
     Random.seed!(k)
